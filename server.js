@@ -63,8 +63,9 @@ app.use(function(req, res, next) {
 
 var dbName='argumDB';
 
-var connectionString='mongodb://localhost:27017/'+dbName;
-
+//var connectionString='mongodb://localhost:27017/'+dbName;
+var connectionString='mongodb://admin:moldova@proximus.modulusmongo.net:27017/dagy4Gug';
+// url : 'mongodb://admin:moldova@proximus.modulusmongo.net:27017/dagy4Gug'
 mongoose.connect(connectionString);
 
 require('./server/routes.js')(app);
