@@ -33,8 +33,7 @@
     "postinstall": "bower install"
   },
   "engines": {
-    "node": "0.9.x",
-     "npm": "1.1.x"
+    "node": "0.10.x",
   },
   "devDependencies": {
     "chai": "~1.9.1",
