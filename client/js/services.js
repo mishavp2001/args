@@ -66,7 +66,7 @@ angular.module('angular-client-side-auth')
 
 angular.module('angular-client-side-auth')
 .factory('Argum',function($resource){
-    return $resource('http://localhost:8000/api/argums/:id',{id:'@_id'},{
+    return $resource('/api/argums/:id',{id:'@_id'},{
         update: {
             method: 'PUT'
         }
