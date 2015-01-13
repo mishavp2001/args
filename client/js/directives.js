@@ -65,3 +65,56 @@ angular.module('angular-client-side-auth').directive('activeNav', ['$location', 
     }
 
 }]);
+
+angular.module('angular-client-side-auth').directive('starRating', ['$location', function($location) {
+    return {
+            restrict : 'A',
+            template : '<ul class="rating">'
+                     + '    <li ng-repeat="star in stars" ng-class="star" ng-click="toggle($index)">'
+                     + '\u2605'
+                     + '</li>'
+                     + '</ul>',
+            scope : {
+                ratingValue : '@ratingValue',
+                max : '=',
+                off : '=',
+                onRatingSelected : '&'
+            },
+            link : function(scope, elem, attrs) {
+                 attrs.$observe('ratingValue', function(val) {
+                    // val will have the value of the attribute
+                    scope.ratingValue =     val;
+
+                var updateStars = function() {
+                    //scope.ratingValue = 9;
+                    //alert(scope.max + scope.ratingValue);
+                    scope.stars = [];
+                    for ( var i = 0; i < scope.max; i++) {
+                        scope.stars.push({
+                            filled : i < scope.ratingValue
+                        });
+                    }
+                };
+                
+                scope.toggle = function(index) {
+                    if (scope.off== true){ return;}
+                    scope.ratingValue = index + 1;
+                    scope.onRatingSelected({
+                        rating : index + 1
+                    });
+                };
+                
+                scope.$watch('ratingValue',
+                    function(oldVal, newVal) {
+                        if (newVal) {
+                            updateStars();
+                        }
+                    }
+                );
+                updateStars();
+                });
+            }
+        };
+   
+}]);
+

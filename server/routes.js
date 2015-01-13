@@ -7,8 +7,107 @@ var _ =           require('underscore')
     , userRoles = require('../client/js/routingConfig').userRoles
     , accessLevels = require('../client/js/routingConfig').accessLevels;
 
+var Argum=require('./models/Argum');
+
+var express=require('express');
+
+//configure routes
+
+var router=express.Router();
+
 var routes = [
 
+    // Argums
+    {
+        path: '/api/argums',
+        httpMethod: 'GET',
+        middleware: [(function(req,res){
+           Argum.find(function(err,argums){
+               if(err)
+                    res.send(err);
+               res.json(argums);
+           });
+        })]
+    },
+    {
+        path: '/api/argums',
+        httpMethod: 'POST',
+        middleware: [(function(req,res){
+             console.log('New argum' + req.body)
+
+            var argums=new Argum(req.body);
+            argums.save(function(err){
+                if(err)
+                    res.send(err);
+                res.json({argums:'Argum Added'});
+            });
+        })]
+    },
+    {
+        path: '/api/argums/*',
+        httpMethod: 'POST',
+        middleware: [(function(req,res){
+             console.log('New argum' + req.body)
+
+            var argums=new Argum(req.body);
+            argums.save(function(err){
+                if(err)
+                    res.send(err);
+                res.json({argums:'Argum Added'});
+            });
+        })]
+    },
+    {
+        path: '/api/argums/:id',
+        httpMethod: 'PUT',
+        middleware: [(function(req,res){
+            Argum.findOne({_id:req.params.id},function(err,argums){
+
+            if(err)
+                res.send(err);
+
+           for(prop in req.body){
+                argums[prop]=req.body[prop];
+           }
+
+            // save the argums
+            argums.save(function(err) {
+                if (err)
+                    res.send(err);
+
+                res.json({ message: 'Argum updated!' });
+            });
+
+           });
+        })]
+    },
+    {
+        path: '/api/argums/:id',
+        httpMethod: 'GET',
+        middleware: [(function(req,res){
+             Argum.findOne({_id:req.params.id},function(err, argums) {
+            if(err)
+                res.send(err);
+
+            res.send(argums);
+           });
+        })]
+    },
+    {
+        path: '/api/argums/:id',
+        httpMethod: 'DELETE',
+        middleware: [(function(req,res){
+            console.log('Delete...');
+            Argum.remove({
+                _id: req.params.id
+            }, function(err, argums) {
+                if (err)
+                    res.send(err);
+
+                res.json({ message: 'Successfully deleted' });
+               });
+        })]
+    },
     // Views
     {
         path: '/partials/*',
@@ -117,6 +216,8 @@ var routes = [
     }
 ];
 
+
+
 module.exports = function(app) {
 
     _.each(routes, function(route) {
@@ -141,6 +242,9 @@ module.exports = function(app) {
                 break;
         }
     });
+
+
+
 }
 
 function ensureAuthorized(req, res, next) {
@@ -152,3 +256,5 @@ function ensureAuthorized(req, res, next) {
     if(!(accessLevel.bitMask & role.bitMask)) return res.send(403);
     return next();
 }
+
+

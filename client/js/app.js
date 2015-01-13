@@ -1,8 +1,13 @@
 'use strict';
 
-angular.module('angular-client-side-auth', ['ngCookies', 'ui.router'])
+angular.module('angular-client-side-auth', ['ngCookies', 'ui.router', 'ngResource', 'ui.bootstrap'])
 
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+
+    //Enable cross domain calls
+    $httpProvider.defaults.useXDomain = true;
+    //Remove the header used to identify ajax call  that would prevent CORS from working
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
     var access = routingConfig.accessLevels;
 
@@ -15,6 +20,35 @@ angular.module('angular-client-side-auth', ['ngCookies', 'ui.router'])
                 access: access.public
             }
         })
+        .state('public.api', {
+             url: '/api/argums/',
+            template: "<ui-view/>",
+            data: {
+                access: access.public
+            }
+        })
+        .state('viewArgum',{
+           url:'/argums/:id/view',
+           templateUrl:'partials/argum-view.html',
+           controller:'ArgumViewController',
+           data: {
+                access: access.public
+            }
+        })
+        .state('argums', {
+            url: '/argums/',
+            templateUrl: 'partials/argums.html',
+            controller: 'ArgumCtrl',
+            data: {
+                access: access.public
+            }
+        })
+        .state('public.newArgum', {
+            url: '/newargum/',
+            templateUrl: 'newargum',
+            controller: 'ArgumCreateController'
+        })
+
         .state('public.404', {
             url: '/404/',
             templateUrl: '404'
@@ -49,9 +83,13 @@ angular.module('angular-client-side-auth', ['ngCookies', 'ui.router'])
                 access: access.user
             }
         })
-        .state('user.home', {
-            url: '/',
-            templateUrl: 'home'
+        .state('editArgum', {
+            url: '/argums/:id/edit',
+            templateUrl: 'partials/argum-edit.html',
+            controller: 'ArgumEditController',
+            data: {
+                access: access.user
+            }
         })
         .state('user.private', {
             abstract: true,

@@ -19,7 +19,8 @@
     "passport-local": "~1.0.0",
     "passport-twitter": "~1.0.2",
     "underscore": "~1.6.0",
-    "validator": "~1.1.1"
+    "validator": "~1.1.1",
+    "mongoose": "~3.8.11"
   },
   "repository": {
     "type": "git",

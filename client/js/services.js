@@ -2,7 +2,7 @@
 
 angular.module('angular-client-side-auth')
 .factory('Auth', function($http, $cookieStore){
-
+     //alert("Here Auth");
     var accessLevels = routingConfig.accessLevels
         , userRoles = routingConfig.userRoles
         , currentUser = $cookieStore.get('user') || { username: '', role: userRoles.public };
@@ -18,7 +18,7 @@ angular.module('angular-client-side-auth')
             if(role === undefined) {
                 role = currentUser.role;
             }
-
+//alert(accessLevel.bitMask + role.bitMask);
             return accessLevel.bitMask & role.bitMask;
         },
         isLoggedIn: function(user) {
@@ -56,9 +56,25 @@ angular.module('angular-client-side-auth')
 
 angular.module('angular-client-side-auth')
 .factory('Users', function($http) {
-    return {
+        return {
         getAll: function(success, error) {
             $http.get('/users').success(success).error(error);
         }
     };
+});
+
+
+angular.module('angular-client-side-auth')
+.factory('Argum',function($resource){
+    return $resource('http://localhost:8000/api/argums/:id',{id:'@_id'},{
+        update: {
+            method: 'PUT'
+        }
+    });
+})
+
+angular.module('angular-client-side-auth').service('popupService',function($window){
+    this.showPopup=function(message){
+        return $window.confirm(message);
+    }
 });

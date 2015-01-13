@@ -1,0 +1,61 @@
+
+<div class="search-bar">
+    <input ng-model="query" type="search" placeholder="search" class="topcoat-search-input search-key">
+</div>
+<table class="table movietable">
+    <tr>
+        <td><h4>Problems</h4></td>
+        <td></td>
+         <td><h4>Best Answer</h4></td>
+        <td class="text-left"> <a ui-sref="public.newArgum" class="btn btn-success">Add New Problem</a></td>
+    </tr>
+    <tr ng-repeat="argum in argums| filter:query | orderBy:'vote':true">
+        <td ng-mouseleave="details=false" ng-mouseover="details=true">
+            <a href="" >{{argum.title}}</a> 
+            <div ng-show="details">{{argum.details}}</div>   
+        </td>
+        <td>
+            <span ng-model="argum.vote" class="star-rating" star-rating rating-value="{{argum.vote}}" max="10" off="true" on-rating-selected="rateFunction(rating)"></span>
+          
+        </td>
+        <td>
+            <span accordion ng-hide="!argum.solutions[0].title">
+                
+                 <div accordion-group heading={{solution.title}} ng-repeat="solution in argum.solutions| limitTo:1" >
+                    <h3>Solution {{$index +1}} - <span ng-model="solution.title">{{solution.title}}</span></h3>
+                    <div>{{solution.details}}</div>
+                    <div class="float-left">
+                        <div class="comp-header">PROS</div>
+                        <ul>
+                             <li ng-repeat="pro in solution.pros| orderBy:rating"> 
+                                    {{pro.title}} - {{pro.rating}}
+                                    <span class="star-rating" star-rating rating-value="{{pro.rating}}" off="true" max="10" ></span>
+                             </li>
+                    </ul>
+                    </div>  
+                    <div class="float-right">
+                        <div class="comp-header">CONS</div>
+                        <ul>
+                             <li ng-repeat="con in solution.cons| orderBy:rating"> 
+                                    {{con.title}} - {{con.rating}}
+                                     <span class="star-rating" star-rating rating-value="{{con.rating}}" off="true" max="10"></span>
+                             </li>
+                        </ul> 
+                    </div>
+               </div>
+
+
+
+            </span>
+
+
+            <span ng-show="!argum.solutions[0].title"> <a class="btn btn-primary" ui-sref="editArgum({id:argum._id})">Add Solution</a></span>
+                
+        </td>
+        <td>
+            <a class="btn btn-primary" ui-sref="viewArgum({id:argum._id})">View</a>
+            <a class="btn btn-primary" ui-sref="editArgum({id:argum._id})">Edit</a>
+            <a class="btn btn-danger"  ng-click="deleteArgum(argum)">Delete</a>
+        </td>
+    </tr>
+</table>

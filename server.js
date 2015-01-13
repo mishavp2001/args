@@ -9,10 +9,13 @@ var express =           require('express')
     , cookieSession =   require('cookie-session')
     , session =         require('express-session')
     , csrf =            require('csurf')
+    ,mongoose = require('mongoose')
     , User =            require('./server/models/User.js');
 
-var app = module.exports = express();
+var argums = require('./server/argums.js');
 
+var app = module.exports = express();
+    
 app.set('views', __dirname + '/client/views');
 app.set('view engine', 'jade');
 app.use(morgan('dev'));
@@ -20,20 +23,20 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'client')));
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(session(
     {
         secret: process.env.COOKIE_SECRET || "Superdupersecret"
     }));
 
 var env = process.env.NODE_ENV || 'development';
-if ('development' === env || 'production' === env) {
+/*if ('development' === env || 'production' === env) {
     app.use(csrf());
     app.use(function(req, res, next) {
         res.cookie('XSRF-TOKEN', req.csrfToken());
         next();
     });
-}
+}*/
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -47,7 +50,28 @@ passport.use(User.localStrategy);
 passport.serializeUser(User.serializeUser);
 passport.deserializeUser(User.deserializeUser);
 
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+//connect to our database
+//Ideally you will obtain DB details from a config file
+
+var dbName='argumDB';
+
+var connectionString='mongodb://localhost:27017/'+dbName;
+
+mongoose.connect(connectionString);
+
 require('./server/routes.js')(app);
+
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 
 app.set('port', process.env.PORT || 8000);
 http.createServer(app).listen(app.get('port'), function(){
