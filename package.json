@@ -60,5 +60,8 @@
     "requirejs": "~2.1.14",
     "sinon": "~1.10.2",
     "supertest": "~0.13.0"
+  },
+  "config": {
+    "unsafe-perm":true
   }
 }
