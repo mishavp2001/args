@@ -116,7 +116,7 @@ angular.module('angular-client-side-auth')
        // argum.solutions[index].pros[index] = rating;
     };
      $scope.addNewSolution=function(){
-        alert("Here"); 
+        //alert("Here"); 
         if(typeof($scope.argum.solutions) == 'undefined'){
             $scope.argum.solutions = [];
         }

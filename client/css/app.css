@@ -61,8 +61,8 @@ body {
     margin-top:10px;
 }
 
-.movietable tr td:nth-child(2) {
-    width: 200px;
+.movietable tr td {
+    width: 20%;
 }    
 
 .Argumtable tr:nth-child(1) td{

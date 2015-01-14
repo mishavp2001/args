@@ -10,6 +10,8 @@ var argumSchema=new Schema({
     details: 'String',
     publishDate: 'String',
     vote: 'String',
+    user: 'String',
+    public: 'String',
     solutions: [
 	    {	id: String,
 	    	title: 'String',
