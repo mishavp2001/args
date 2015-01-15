@@ -27,14 +27,6 @@ angular.module('angular-client-side-auth', ['ngCookies', 'ui.router', 'ngResourc
                 access: access.public
             }
         })
-        .state('viewArgum',{
-           url:'/argums/:id/view',
-           templateUrl:'partials/argum-view.html',
-           controller:'ArgumViewController',
-           data: {
-                access: access.public
-            }
-        })
         .state('public.newArgum', {
             url: '/newargum/',
             templateUrl: 'newargum',
@@ -52,6 +44,14 @@ angular.module('angular-client-side-auth', ['ngCookies', 'ui.router', 'ngResourc
             abstract: true,
             template: "<ui-view/>",
             data: {
+                access: access.anon
+            }
+        })
+        .state('viewArgum',{
+           url:'/argums/:id/view',
+           templateUrl:'partials/argum-view.html',
+           controller:'ArgumViewController',
+           data: {
                 access: access.anon
             }
         })
