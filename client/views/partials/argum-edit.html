@@ -2,10 +2,9 @@
    <table class="table movietable form-group">
     <tr>
         <td>
-            <h3> <input type="text" ng-model="argum.title" class="form-control" id="title" placeholder="Problem Title Here"/></h3>
-            <span>Share:</spna><input type="checkbox" ng-model="argum.share" class="form-control" id="title" placeholder="title"/> 
+            <h3> <input type="text" ng-model="argum.title" class="form-control" id="title" placeholder="Problem Title Here"/><span>Share:</spna><input type="checkbox"  ng-model="argum.share" class="" id="share" /> </h3>
            <div class="star-rating"  star-rating rating-value="{{argum.vote}}" max="10" on-rating-selected="rateFunction(rating, argum)"></div>
-            <span ng-model="argum.user" class="form-control" id="user" /> 
+            <span ng-model="argum.user"  id="user" >{{argum.user}}</span>
             <input type="hidden" ng-model="argum.vote" class="form-control" id="details" placeholder="Details"/> 
             
         <td></td>
