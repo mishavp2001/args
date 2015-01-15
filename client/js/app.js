@@ -30,10 +30,7 @@ angular.module('angular-client-side-auth', ['ngCookies', 'ui.router', 'ngResourc
         .state('viewArgum',{
            url:'/argums/:id/view',
            templateUrl:'partials/argum-view.html',
-           controller:'ArgumViewController',
-           data: {
-                access: access.public
-            }
+           controller:'ArgumViewController'
         })
         .state('argums', {
             url: '/argums/',
