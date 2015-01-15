@@ -18,7 +18,7 @@ angular.module('angular-client-side-auth')
             if(role === undefined) {
                 role = currentUser.role;
             }
-        alert(accessLevel);
+        //alert(accessLevel);
             return accessLevel.bitMask & role.bitMask;
         },
         isLoggedIn: function(user) {
