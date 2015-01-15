@@ -54,8 +54,8 @@
         </td>
         <td>
             <a class="btn btn-primary" ui-sref="viewArgum({id:argum._id})">View</a>
-            <a access-level="user" class="btn btn-primary" ui-sref="editArgum({id:argum._id})">Edit</a>
-            <a access-level="user" class="btn btn-danger"  ng-click="deleteArgum(argum)">Delete</a>
+            <a access-level="accessLevels.user" class="btn btn-primary" ui-sref="editArgum({id:argum._id})">Edit</a>
+            <a access-level="accessLevels.user" class="btn btn-danger"  ng-click="deleteArgum(argum)">Delete</a>
         </td>
     </tr>
 </table>
