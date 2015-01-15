@@ -5,7 +5,7 @@
            <span ng-model="argum.vote" class="star-rating" star-rating rating-value="{{argum.vote}}" max="10" off="true" on-rating-selected="rateFunction(rating)"></span>
             <span>Created by:</span><span ng-model="argum.user"  id="user" >{{argum.user}}</span>
             <span>Share:</spna><input type="checkbox"  ng-model="argum.share" class="" id="share" > {{argum.share}}</span>
-            
+
         </td>
         <td></td>
     </tr>
@@ -41,5 +41,5 @@
 </table>
 
 <div>
-    <a access-level="accessLevels.user" class="btn btn-primary" ui-sref="editArgum({id:argum._id})">Edit</a>
+    <a data-access-level="accessLevels.user" class="btn btn-primary" ui-sref="editArgum({id:argum._id})">Edit</a>
 </div>
