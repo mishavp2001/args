@@ -110,7 +110,7 @@ angular.module('angular-client-side-auth')
         //$scope.argum.vote = rating;
         if (obj.solutions != null ){
             obj.vote = rating;    
-        } else if (obj.rating != null) {
+        } else  {
              obj.rating = rating;    
         }
        // argum.solutions[index].pros[index] = rating;
@@ -144,12 +144,13 @@ angular.module('angular-client-side-auth')
     }
 
 }).controller('ArgumEditController',function($scope,$state,$stateParams,Argum){
+
     $scope.rateFunction = function(rating, obj) {
         //alert("Rating selected - " + rating);
         //$scope.argum.vote = rating;
         if (obj.solutions != null ){
             obj.vote = rating;    
-        } else if (obj.rating != null) {
+        } else  {
              obj.rating = rating;    
         }
        // argum.solutions[index].pros[index] = rating;
@@ -193,6 +194,7 @@ angular.module('angular-client-side-auth')
     };
 
     $scope.loadArgum();
+    $scope.rating = $scope.argum.vote;
 });
 
 angular.module('angular-client-side-auth')

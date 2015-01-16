@@ -16,8 +16,8 @@ var argumSchema=new Schema({
 	    {	id: String,
 	    	title: 'String',
 	    	details: 'String',
-	    	pros:[{id: String, title: String, details: String, rating: Number}],
-	    	cons:[{id: String, title: String, details: String, rating: Number}]
+	    	pros:[{id: String, title: String, details: String, rating: String}],
+	    	cons:[{id: String, title: String, details: String, rating: String}]
 	    }	
     ]
 });

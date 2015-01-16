@@ -27,7 +27,7 @@
                     <div class="float-left">
                         <div class="comp-header">PROS</div>
                         <ul>
-                             <li ng-repeat="pro in solution.pros| orderBy:rating"> 
+                             <li ng-repeat="pro in solution.pros| orderBy:'rating':true"> 
                                     {{pro.title}} - {{pro.rating}}
                                     <span class="star-rating" star-rating rating-value="{{pro.rating}}" off="true" max="10" ></span>
                              </li>
@@ -36,7 +36,7 @@
                     <div class="float-right">
                         <div class="comp-header">CONS</div>
                         <ul>
-                             <li ng-repeat="con in solution.cons| orderBy:rating"> 
+                             <li ng-repeat="con in solution.cons| orderBy:'rating':true"> 
                                     {{con.title}} - {{con.rating}}
                                      <span class="star-rating" star-rating rating-value="{{con.rating}}" off="true" max="10"></span>
                              </li>
