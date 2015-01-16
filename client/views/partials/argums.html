@@ -9,7 +9,7 @@
          <td><h4>Best Answer</h4></td>
         <td class="text-left"> <a ui-sref="public.newArgum" class="btn btn-success">Add New Problem</a></td>
     </tr>
-    <tr ng-repeat="argum in argums| filter:query | orderBy:'vote':true">
+    <tr ng-repeat="argum in argums| filter:query | orderBy:vote:true">
         <td ng-mouseleave="details=false" ng-mouseover="details=true">
             <a href="" >{{argum.title}}</a> 
             <div ng-show="details">{{argum.details}}</div>   
