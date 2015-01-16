@@ -9,7 +9,7 @@
          <td><h4>Best Answer</h4></td>
         <td class="text-left"> <a ui-sref="public.newArgum" class="btn btn-success">Add New Problem</a></td>
     </tr>
-    <tr ng-repeat="argum in argums| filter:query | orderBy:vote:true">
+    <tr ng-repeat="argum in argums| filter:query | orderBy:'vote':true">
         <td ng-mouseleave="details=false" ng-mouseover="details=true">
             <a href="" >{{argum.title}}</a> 
             <div ng-show="details">{{argum.details}}</div>   
@@ -21,7 +21,7 @@
         <td>
             <span accordion ng-hide="!argum.solutions[0].title">
                 
-                 <div accordion-group heading={{solution.title}} ng-repeat="solution in argum.solutions| limitTo:1" >
+                 <div accordion-group heading={{solution.title}} ng-repeat="solution in argum.solutions| limitTo:2" >
                     <h3>Solution {{$index +1}} - <span ng-model="solution.title">{{solution.title}}</span></h3>
                     <div>{{solution.details}}</div>
                     <div class="float-left">
