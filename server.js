@@ -12,7 +12,7 @@ var express =           require('express')
     ,mongoose = require('mongoose')
     , User =            require('./server/models/User.js');
 
-var argums = require('./server/argums.js');
+var argums = require('./server/argum_routes.js');
 
 var app = module.exports = express();
     
@@ -64,7 +64,9 @@ app.use(function(req, res, next) {
 var dbName='argumDB';
 
 //var connectionString='mongodb://localhost:27017/'+dbName;
-var connectionString='mongodb://admin:moldova@proximus.modulusmongo.net:27017/dagy4Gug';
+//var connectionString='mongodb://admin:moldova@proximus.modulusmongo.net:27017/dagy4Gug';
+var connectionString='mongodb://admin:moldova@ds031661.mongolab.com:31661/heroku_app33214390';
+//mongodb://<dbuser>:<dbpassword>@ds031661.mongolab.com:31661/heroku_app33214390
 // url : 'mongodb://admin:moldova@proximus.modulusmongo.net:27017/dagy4Gug'
 mongoose.connect(connectionString);
 

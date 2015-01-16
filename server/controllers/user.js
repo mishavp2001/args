@@ -5,6 +5,7 @@ var _ =           require('underscore')
 module.exports = {
     index: function(req, res) {
         var users = User.findAll();
+        console.log("All users = " + users);
         _.each(users, function(user) {
             delete user.password;
             delete user.twitter;

@@ -21,7 +21,7 @@
          */
         accessLevels : {
             'public' : "*",
-            'anon': ['public'],
+            'anon': ['public', 'user', 'admin'],
             'user' : ['user', 'admin'],
             'admin': ['admin']
         }

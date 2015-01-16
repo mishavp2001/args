@@ -9,20 +9,39 @@ var User
     , check =           require('validator').check
     , userRoles =       require('../../client/js/routingConfig').userRoles;
 
-var users = [
-    {
-        id:         1,
-        username:   "user",
-        password:   "123",
-        role:   userRoles.user
-    },
-    {
-        id:         2,
-        username:   "admin",
-        password:   "123",
-        role:   userRoles.admin
-    }
-];
+
+
+var mongoose=require('mongoose');
+var Schema=mongoose.Schema;
+
+var usersSchema=new Schema({
+    id: Number,
+    username: 'String',
+    password: "String",
+    role: {"bitMask": Number, "title" : "String"}
+  });
+
+console.log("Before getting users");
+var User = mongoose.model('users',usersSchema);
+
+var users ={};
+User.find(
+            {},
+            function(err, docs) {
+            if (!err){ 
+               console.log(docs);
+               //process.exit();
+               users = docs;
+                      }
+            else { throw err;}
+
+            }
+    );
+//debugger;
+console.log("users=" + users);
+
+module.exports = User;
+
 
 module.exports = {
     addUser: function(username, password, role, callback) {
@@ -40,6 +59,14 @@ module.exports = {
             role:       role
         };
         users.push(user);
+
+        var user_db=new User(user);
+        user_db.save(function(err){
+            if(err)
+                return callback("Failed to save")
+            });
+
+        console.log("New user" + user);
         callback(null, user);
     },
 
@@ -68,6 +95,7 @@ module.exports = {
     },
 
     findByUsername: function(username) {
+        console.log("Test", users, username);
         return _.clone(_.find(users, function(user) { return user.username === username; }));
     },
 

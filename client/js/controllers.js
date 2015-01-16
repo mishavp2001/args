@@ -10,7 +10,7 @@ angular.module('angular-client-side-auth')
 
     $scope.logout = function() {
         Auth.logout(function() {
-            $location.path('/login');
+            $location.path('/argums');
         }, function() {
             $rootScope.error = "Failed to logout";
         });
@@ -75,7 +75,7 @@ angular.module('angular-client-side-auth')
                 rememberme: $scope.rememberme
             },
             function(res) {
-                $location.path('/');
+                $location.path('/argums');
             },
             function(err) {
                 $rootScope.error = "Failed to login";
