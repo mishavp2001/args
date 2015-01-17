@@ -89,11 +89,6 @@ angular.module('angular-client-side-auth')
 
 angular.module('angular-client-side-auth')
 .controller('ArgumViewController',function($scope,$stateParams,Argum){
-    
-    $scope.rateFunction = function(rating) {
-        //alert("Rating selected - " + rating);
-        //$scope.argum.vote = rating;
-    };
 
     $scope.argum=Argum.get({id:$stateParams.id});
     $scope.rating = $scope.argum.vote;
@@ -105,13 +100,15 @@ angular.module('angular-client-side-auth')
     $scope.argum=new Argum();
     $scope.rating = $scope.argum.vote;
 
-    $scope.rateFunction = function(rating, obj) {
+    $scope.rateFunction = function(rating, obj, solutionargs) {
         //alert("Rating selected - " + rating);
         //$scope.argum.vote = rating;
         if (obj.solutions != null ){
             obj.vote = rating;    
         } else  {
-             obj.rating = rating;    
+            //PROS or CONS waight
+            obj.rating = rating;
+            solutionarg.score =  (parseInt(solutionargs.score) + rating)/(solutionargs.length() + 1) 
         }
        // argum.solutions[index].pros[index] = rating;
     };
@@ -124,7 +121,6 @@ angular.module('angular-client-side-auth')
     }
 
     $scope.addNewPro=function(sol){
-        alert(sol);    
         if(sol.pros == null){
             sol.pros = [];
         }
@@ -145,16 +141,30 @@ angular.module('angular-client-side-auth')
 
 }).controller('ArgumEditController',function($scope,$state,$stateParams,Argum){
 
-    $scope.rateFunction = function(rating, obj) {
+   $scope.rateFunction = function(rating, obj, solution) {
         //alert("Rating selected - " + rating);
         //$scope.argum.vote = rating;
         if (obj.solutions != null ){
             obj.vote = rating;    
         } else  {
-             obj.rating = rating;    
+            //PROS or CONS weight
+            solution.score = solution.score || 0;
+            obj.rating = rating;
+            solution.score =  $scope.addRating(solution.pros) - $scope.addRating(solution.cons);
         }
        // argum.solutions[index].pros[index] = rating;
     };
+
+    $scope.addRating = function(arr){
+        var sum =0;
+        var i;
+        for(i=0; i <= arr.length-1; i++ ){
+            arr[i].rating = (parseInt(arr[i].rating)!='NaN')?parseInt(arr[i].rating):0;    
+            sum = sum + arr[i].rating;
+        }
+        return parseInt(sum);
+
+    }
 
     $scope.addNewSolution=function(){
         //alert("Here"); 
@@ -164,17 +174,16 @@ angular.module('angular-client-side-auth')
         $scope.argum.solutions.push({"title": "Solution"});
     }
     $scope.addNewPro=function(sol){
-        alert(sol);    
         if(sol.pros == null){
             sol.pros = [];
         }
-        sol.pros.push({"title": "pro"});
+        sol.pros.push({"title": "pro", "rating": 0});
     }
     $scope.addNewCon=function(sol){
          if(sol.cons == null){
             sol.cons = [];
         }
-        sol.cons.push({"title": "cons"});
+        sol.cons.push({"title": "cons", "rating": 0});
     }
    
      $scope.updateArgum=function(){
@@ -190,11 +199,9 @@ angular.module('angular-client-side-auth')
     $scope.loadArgum=function(){
         $scope.argum=Argum.get({id:$stateParams.id});
         $scope.rating = $scope.argum.vote;
-
     };
 
     $scope.loadArgum();
-    $scope.rating = $scope.argum.vote;
 });
 
 angular.module('angular-client-side-auth')

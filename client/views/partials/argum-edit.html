@@ -20,12 +20,14 @@
  </table>
 
  <table accordion class="table">
-    <tr accordion-group heading="{{solution.title}}" ng-repeat="solution in argum.solutions">
-        <td colspan="2">
-            <h3>Solution {{$index +1}} - <span ng-model="solution.title">{{solution.title}}</span></h3>
-            <h3>
-                <input type="text" ng-model="solution.title" class="form-control" id="title" placeholder="title"/> 
-            </h3>
+
+    <tr accordion-group  ng-repeat="solution in argum.solutions">
+           <td colspan="2">
+            <div accordion-heading > <input type="text" ng-model="solution.title" class="" id="title" placeholder="title"/>  <span class="score">{{solution.score}}</span></div>
+            <p>
+                
+                <input type="hidden" ng-model="solution.score" id="score"></input> 
+            </p>
             <div>
                 <textarea class="txt-wide" ng-model="solution.details"  id="title" placeholder="Details"></textarea> 
             </div>
@@ -34,8 +36,8 @@
                 <ul>
                      <li ng-repeat="pro in solution.pros| orderBy:'rating':true"> 
                             <input type="text" ng-model="pro.title" class="form-control" id="title" placeholder="PRO"/> 
-                            - {{pro.rating}}
-                            <span class="star-rating" star-rating rating-value="{{pro.rating}}" max="10" on-rating-selected="rateFunction(rating, pro)"></span>
+                            {{pro.rating}}
+                            <span class="star-rating" star-rating rating-value="{{pro.rating}}" max="10" on-rating-selected="rateFunction(rating, pro, solution)"></span>
                             <input type="hidden" ng-model="pro.rating" class="form-control" id="pro{{$index}}" placeholder="Details"/> 
                      </li>
             </ul>
@@ -46,8 +48,8 @@
                 <ul>
                      <li ng-repeat="con in solution.cons| orderBy:'rating':true"> 
                             <input type="text" ng-model="con.title" class="form-control" id="title" placeholder="CON"/> 
-                            - {{con.rating}}
-                            <span class="star-rating" star-rating rating-value="{{con.rating}}" max="10" on-rating-selected="rateFunction(rating, con)"></span>
+                            {{con.rating}}
+                            <span class="star-rating" star-rating rating-value="{{con.rating}}" max="10" on-rating-selected="rateFunction(rating, con, solution)"></span>
                             <input type="hidden" ng-model="con.rating" class="form-control" id="cons{{$index}}" placeholder="Details"/> 
                      </li>
                 </ul> 

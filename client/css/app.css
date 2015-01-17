@@ -144,3 +144,14 @@ td.text-left {
 .search-bar > input {
     width: 100%;
 }
+
+#score {
+    left: 281px;
+    position: relative;
+    top: -70px;
+}
+.score{
+  float:right;
+  padding-right: 10px;
+  padding-left: 20px;
+}

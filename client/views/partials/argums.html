@@ -21,7 +21,8 @@
         <td>
             <span accordion ng-hide="!argum.solutions[0].title">
                 
-                 <div accordion-group heading={{solution.title}} ng-repeat="solution in argum.solutions| limitTo:2" >
+                 <div accordion-group  ng-repeat="solution in argum.solutions| limitTo:2" >
+                 <div accordion-heading > {{solution.title}} <span class="score">{{solution.score}}</span></div>
                     <h3>Solution {{$index +1}} - <span ng-model="solution.title">{{solution.title}}</span></h3>
                     <div>{{solution.details}}</div>
                     <div class="float-left">
