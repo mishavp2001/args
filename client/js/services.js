@@ -66,10 +66,11 @@ angular.module('angular-client-side-auth')
 
 angular.module('angular-client-side-auth')
 .factory('Argum',function($resource){
-    return $resource('/api/argums/:id',{id:'@_id'},{
+    return $resource('/api/argums/:id?username=:username',{id:'@_id', username:'@username'},{
         update: {
             method: 'PUT'
         }
+
     });
 })
 

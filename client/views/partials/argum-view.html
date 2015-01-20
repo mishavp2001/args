@@ -4,7 +4,9 @@
            
            <span ng-model="argum.vote" class="star-rating" star-rating rating-value="{{argum.vote}}" max="10" off="true" on-rating-selected="rateFunction(rating)"></span>
             <span>Created by:</span><span ng-model="argum.user"  id="user" >{{argum.user}}</span>
-            <span>Share:</spna><input type="checkbox"  ng-model="argum.share" class="" id="share" > {{argum.share}}</span>
+           <p>
+                Share:<input type="checkbox" ng-checked="argum.share" ng-model="argum.share" class="" id="share" />
+            </p>
 
         </td>
         <td></td>
@@ -23,7 +25,7 @@
                 <ul>
                      <li ng-repeat="pro in solution.pros| orderBy:'rating':true"> 
                             {{pro.title}} - {{pro.rating}}
-                            <span class="star-rating" star-rating rating-value="{{pro.rating}}" off="true" max="10" ></span>
+                            <span class="star-rating" star-rating rating-value="{{pro.rating}}" off="true" color="green" code="&#9878;" max="10" on-rating-selected="rateFunction(rating, pro, solution)"></span>
                      </li>
             </ul>
             </div>  
@@ -32,7 +34,7 @@
                 <ul>
                      <li ng-repeat="con in solution.cons| orderBy:'rating':true"> 
                             {{con.title}} - {{con.rating}}
-                             <span class="star-rating" star-rating rating-value="{{con.rating}}" off="true" max="10"></span>
+                              <span class="star-rating" star-rating rating-value="{{pro.rating}}" off="true" color="red" code="&#9878;" max="10" on-rating-selected="rateFunction(rating, pro, solution)"></span>
                      </li>
                 </ul> 
             </div>

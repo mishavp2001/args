@@ -5,8 +5,10 @@
             <h3> <input type="text" ng-model="argum.title" class="form-control" id="title" placeholder="Problem Title Here"/> </h3>
            <span class="star-rating"  star-rating rating-value="{{argum.vote}}" max="10" on-rating-selected="rateFunction(rating, argum)">
             </span>
-             <span>Created by:</span><span ng-model="argum.user"  id="user" >{{argum.user}}</span>
-            <span>Share:</spna><input type="checkbox"  ng-model="argum.share" class="" id="share" > {{argum.share}}</span>
+             <span>Created by </span>{{ user.username }} on {{argum.date}}.</span> 
+            <p>
+                Share:<input type="checkbox" ng-checked="argum.share" ng-model="argum.share" class="" id="share" />
+            </p>
            
             <input type="hidden" ng-model="argum.vote" class="form-control" id="details" placeholder="Details"/> 
             
@@ -19,42 +21,41 @@
     </tr>
  </table>
 
- <table accordion class="table">
+ <table accordion close-others="false" class="argum-table">
 
-    <tr accordion-group  ng-repeat="solution in argum.solutions">
-           <td colspan="2">
-            <div accordion-heading > <input type="text" ng-model="solution.title" class="" id="title" placeholder="title"/>  <span class="score">{{solution.score}}</span></div>
+    <tr>
+        {{argum.solutions.solution}}
+        <td  ng-class='{best:$first}' ng-repeat="solution in argum.solutions| orderBy:'score':true">
+            <div accordion-group>    
+            <div accordion-heading >{{solution.title}}  <span class="score">{{solution.score}}</span></div>
             <p>
-                
+                <input type="text" ng-model="solution.title" class="" id="title" placeholder="title"/> 
                 <input type="hidden" ng-model="solution.score" id="score"></input> 
             </p>
             <div>
                 <textarea class="txt-wide" ng-model="solution.details"  id="title" placeholder="Details"></textarea> 
             </div>
             <div class="comp float-left">
-                <div class="comp-header">PROS</div>
                 <ul>
                      <li ng-repeat="pro in solution.pros| orderBy:'rating':true"> 
                             <input type="text" ng-model="pro.title" class="form-control" id="title" placeholder="PRO"/> 
-                            {{pro.rating}}
-                            <span class="star-rating" star-rating rating-value="{{pro.rating}}" max="10" on-rating-selected="rateFunction(rating, pro, solution)"></span>
+                            <span class="star-rating" star-rating rating-value="{{pro.rating}}" color="green" code="&#9878;" max="10" on-rating-selected="rateFunction(rating, pro, solution)"></span><span class="score-sm">{{pro.rating}}</span>
                             <input type="hidden" ng-model="pro.rating" class="form-control" id="pro{{$index}}" placeholder="Details"/> 
                      </li>
             </ul>
-            <input ng-click="addNewPro(solution)" class="btn" value="Add"/>
+            <input ng-click="addNewPro(solution)" class="btn comp-header" value="Add PROS"/>
             </div>  
             <div class="comp float-left">
-                <div class="comp-header">CONS</div>
                 <ul>
                      <li ng-repeat="con in solution.cons| orderBy:'rating':true"> 
                             <input type="text" ng-model="con.title" class="form-control" id="title" placeholder="CON"/> 
-                            {{con.rating}}
-                            <span class="star-rating" star-rating rating-value="{{con.rating}}" max="10" on-rating-selected="rateFunction(rating, con, solution)"></span>
+                            <span class="star-rating" star-rating rating-value="{{con.rating}}" max="10" color="red" code="&#9878;" on-rating-selected="rateFunction(rating, con, solution)"></span><span class="score-sm">{{con.rating}}</span>
                             <input type="hidden" ng-model="con.rating" class="form-control" id="cons{{$index}}" placeholder="Details"/> 
                      </li>
                 </ul> 
-                <input ng-click="addNewCon(solution)" class="btn" value="Add"/>
+                <input ng-click="addNewCon(solution)" class="btn comp-header" value="Add CONS"/>
             </div>
+        </div>    
         </td>
     </tr>
 </table>

@@ -3,14 +3,14 @@
 /* Controllers */
 
 angular.module('angular-client-side-auth')
-.controller('NavCtrl', ['$rootScope', '$scope', '$location', 'Auth', function($rootScope, $scope, $location, Auth) {
+.controller('NavCtrl', ['$rootScope', '$scope', '$location', 'Auth', '$state', function($rootScope, $scope, $location, Auth, $state) {
     $scope.user = Auth.user;
     $scope.userRoles = Auth.userRoles;
     $scope.accessLevels = Auth.accessLevels;
 
     $scope.logout = function() {
         Auth.logout(function() {
-            $location.path('/argums');
+              $state.go('argums', {}, {reload: true});
         }, function() {
             $rootScope.error = "Failed to logout";
         });
@@ -25,14 +25,20 @@ angular.module('angular-client-side-auth')
     $scope.loggedin = Auth.isLoggedIn();
     $scope.userRoles = Auth.userRoles;
     $scope.accessLevels = Auth.accessLevels;
+    $scope.user = Auth.user;
 
-    $scope.argums=Argum.query();
-    
+//alert("$scope.username" + $scope.user.username);
+$scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password});  
+    /*$scope.argums=Argum.getAll(  
+                {username: $scope.username,
+                password: $scope.password} );
+*/
+    //{name: $scope.username, password:$scope.password }
     //alert($scope.argums);
     $scope.moto="Welcome to our site!";
 
     $scope.deleteArgum=function(Argum){
-        if(!$scope.loggedin){
+        if(!$scope.loggedin | Argum.user != $scope.user.username){
             alert("You don't have access");
             return;
         }   
@@ -95,11 +101,13 @@ angular.module('angular-client-side-auth')
     //updateStars();
     //alert($scope.rating);
 
-}).controller('ArgumCreateController',function($scope,$state,$stateParams,Argum){
+}).controller('ArgumCreateController',function($scope,$state,$stateParams,Argum, Auth){
 
     $scope.argum=new Argum();
     $scope.rating = $scope.argum.vote;
-
+    $scope.user = Auth.user;
+    $scope.argum.user = $scope.user.username;
+    $scope.argum.date = new Date();
     $scope.rateFunction = function(rating, obj, solutionargs) {
         //alert("Rating selected - " + rating);
         //$scope.argum.vote = rating;
@@ -108,7 +116,7 @@ angular.module('angular-client-side-auth')
         } else  {
             //PROS or CONS waight
             obj.rating = rating;
-            solutionarg.score =  (parseInt(solutionargs.score) + rating)/(solutionargs.length() + 1) 
+            solutionarg.score =  (parseInt(solutionargs.score) + rating)/(solutionargs.length() + 1) ;
         }
        // argum.solutions[index].pros[index] = rating;
     };
@@ -139,9 +147,15 @@ angular.module('angular-client-side-auth')
         });
     }
 
-}).controller('ArgumEditController',function($scope,$state,$stateParams,Argum){
+}).controller('ArgumEditController',
+    ['$rootScope', '$scope', '$location', '$window', 'Auth', '$state', '$stateParams', 'Argum', function($rootScope, $scope, $location, $window, Auth, $state,$stateParams,Argum) {
 
-   $scope.rateFunction = function(rating, obj, solution) {
+    $scope.user = Auth.user;
+    $scope.userRoles = Auth.userRoles;
+    $scope.accessLevels = Auth.accessLevels;
+
+  
+    $scope.rateFunction = function(rating, obj, solution) {
         //alert("Rating selected - " + rating);
         //$scope.argum.vote = rating;
         if (obj.solutions != null ){
@@ -191,9 +205,23 @@ angular.module('angular-client-side-auth')
         if($scope.newsolution.title){
             $scope.argum.solutions.push();
         }*/
-        $scope.argum.$update(function(){
-            $state.go('argums');
-        });
+         if( $scope.argum.user != $scope.user.username){
+            var temp = $scope.argum;
+            $scope.argum=new Argum();
+            var id = $scope.argum._id;
+            
+            angular.extend($scope.argum, temp);
+            $scope.argum._id = id;
+            $scope.argum.user = $scope.user.username;
+            
+            $scope.argum.$save(function(){
+                $state.go('argums', {}, {reload: true});
+            });
+        } else {
+            $scope.argum.$update(function(){
+                $state.go($state.current, {}, {reload: true});
+            });    
+        }
     };
 
     $scope.loadArgum=function(){
@@ -202,7 +230,7 @@ angular.module('angular-client-side-auth')
     };
 
     $scope.loadArgum();
-});
+}]);
 
 angular.module('angular-client-side-auth')
 .controller('RegisterCtrl',

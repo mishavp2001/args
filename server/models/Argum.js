@@ -11,7 +11,8 @@ var argumSchema=new Schema({
     publishDate: 'String',
     vote: 'String',
     user: 'String',
-    share: 'String',
+    share: 'Boolean',
+    date: 'Date',
     solutions: [
 	    {	id: String,
 	    	title: 'String',

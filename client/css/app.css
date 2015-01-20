@@ -62,9 +62,17 @@ body {
 }
 
 .movietable tr td {
-    width: 20%;
-}    
+} 
 
+.movietable tr td.problem-col {
+    width: 30%;
+}
+.movietable tr td.star-col {
+    width: 12%;
+} 
+.movietable tr td.argums-col {
+    width: 30%;
+} 
 .Argumtable tr:nth-child(1) td{
     border-top: none;
 }
@@ -114,6 +122,7 @@ ul.rating {
    padding: 5px;
    text-align: center;
    margin: 2px;
+   width: 100px;
 }
 
 .comp ul, .comp ol {
@@ -142,7 +151,7 @@ td.text-left {
 }
 
 .search-bar > input {
-    width: 100%;
+    width: 42%;
 }
 
 #score {
@@ -155,3 +164,43 @@ td.text-left {
   padding-right: 10px;
   padding-left: 20px;
 }
+.score-sm {
+    float: right;
+    font-size: 10px;
+    padding-left: 10px;
+    padding-right: 5px;
+    position: relative;
+    top: -18px;
+}
+
+.argum-table tbody {
+    vertical-align: top;
+}
+
+.argum-table td {
+  padding-left: 15px;}
+
+
+.best .panel-default .panel-heading {
+  font-weight: bold;
+  background-color: #FFD700;
+}    
+
+.argums-list {
+  font-size: 10px;
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+  padding: 0px;
+  border-right: 1px solid grey;
+}
+
+.argums-list div.bottom{
+  border-bottom: 1px solid grey;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+.btn-success {
+  margin-left: 10px;
+ } 

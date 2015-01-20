@@ -69,25 +69,32 @@ angular.module('angular-client-side-auth').directive('activeNav', ['$location', 
 angular.module('angular-client-side-auth').directive('starRating', ['$location', function($location) {
     return {
             restrict : 'A',
-            template : '<ul class="rating">'
-                     + '    <li ng-repeat="star in stars" ng-class="star" ng-click="toggle($index)">'
-                     + '\u2605'
+            template : '<ul class="rating {{color}}" >'
+                     + '    <li ng-repeat="star in stars" ng-class="star"  ng-click="toggle($index)">'
+                     + '{{code}}'
                      + '</li>'
-                     + '</ul>',
+                     + '</ul>'
+                     + '<style>ul.{{color}} li.filled { color:{{color}}}</style>',
             scope : {
                 ratingValue : '@ratingValue',
+                code: '@code',
+                color: '@color',
                 max : '=',
                 off : '=',
                 onRatingSelected : '&'
             },
             link : function(scope, elem, attrs) {
-                 attrs.$observe('ratingValue', function(val) {
+                attrs.$observe('ratingValue', function(val) {
                     // val will have the value of the attribute
                     scope.ratingValue =     val;
-
+                  
+                    scope.code = attrs.code|| '\u2605';
+                    scope.color = attrs.color;
+//alert(scope.code);
+                  
                 var updateStars = function() {
                     //scope.ratingValue = 9;
-                    //alert(scope.max + scope.ratingValue);
+                    //alert(scope.star_code + scope.ratingValue);
                     scope.stars = [];
                     for ( var i = 0; i < scope.max; i++) {
                         scope.stars.push({

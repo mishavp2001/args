@@ -22,7 +22,9 @@ var routes = [
         path: '/api/argums',
         httpMethod: 'GET',
         middleware: [(function(req,res){
-           Argum.find(function(err,argums){
+            console.log('Req' + req.query.username)
+              Argum.find({"$or" :[{'share':true}, {'user':req.query.username}]},  function(err,argums){
+                
                if(err)
                     res.send(err);
                res.json(argums);
@@ -85,6 +87,7 @@ var routes = [
         path: '/api/argums/:id',
         httpMethod: 'GET',
         middleware: [(function(req,res){
+             console.log('ID' + req.params.username);
              Argum.findOne({_id:req.params.id},function(err, argums) {
             if(err)
                 res.send(err);

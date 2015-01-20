@@ -7,7 +7,9 @@
 
            <div class="star-rating"  star-rating rating-value="{{argum.vote}}" max="10" on-rating-selected="rateFunction(rating, argum)"></div>
             <input type="hidden" ng-model="argum.vote" class="form-control" id="details" placeholder="Details"/> 
-            
+            <input type="hidden" ng-model="user.username"  id="user" placeholder="user"/>
+            <input type="hidden" ng-model="argum.date"  id="date" placeholder="date"/> 
+                
         <td></td>
     </tr>
     <tr>

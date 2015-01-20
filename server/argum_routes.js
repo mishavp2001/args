@@ -11,9 +11,11 @@ var router=express.Router();
 
 
 
-router.route('/argums')
+router.route('/argums:name/:password')
     .get(function(req,res){
-       Argum.find(function(err,argums){
+    console.log('New argum' + req.params.name + req.params.password);
+    
+       Argum.findAll({'share': true }, function(err,argums){
            if(err)
                 res.send(err);
            res.json(argums);
