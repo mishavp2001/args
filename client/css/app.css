@@ -2,9 +2,27 @@
     display: none;
 }
 
+/*Sticky footer */
 body {
     font-size: 1em;
 }
+
+html, body, #wrap {height: 100%;}
+
+body > #wrap {height: auto; min-height: 100%;}
+
+#main {padding-bottom: 150px;}  /* must be same height as the footer */
+
+#footer {
+   position:fixed;
+   bottom:0px;
+   width: 80%;
+   height: 120px;
+   background-color: black;
+   border: 1px solid black;
+} 
+
+
 
 #cover {
     position:absolute;
@@ -68,7 +86,24 @@ body {
     width: 30%;
 }
 .movietable tr td.star-col {
-    width: 12%;
+    width: 15%;
+    font-size:1em;
+
+ /* -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+*/
+  /* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
+  /*-webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  -o-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+*/
+  /* Should be unset in IE9+ I think. */
+  /*filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);*/
 } 
 .movietable tr td.argums-col {
     width: 30%;
@@ -204,3 +239,96 @@ td.text-left {
 .btn-success {
   margin-left: 10px;
  } 
+ .table.movietable {
+    width: 80%;
+    float: left;
+ }
+ .argum-table{
+   width: 80%;
+   float: left;
+ }
+ .g-search {
+  /*float:right;
+  width:19%;*/
+ }
+.arg-details {
+    wrap: nowrap; 
+    display:block;
+    max-height: 3em;
+    width: 97%;
+    overflow: hidden;
+    position: relative;
+}
+
+.ellipsis {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #FFFFFF;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    bottom: 0;
+    margin-left: 4px;
+    position: absolute;
+    right: 0;
+}
+
+.fill {
+    background: #fff; 
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+
+ #my-frame {
+  width: 100%;
+  height: 800px;
+  border: 1px solid black; 
+ }
+.g-serach-selected{
+  background-color: #008000;
+}
+ .g-serach-list {
+    display: inline-block;
+    list-style-type: none;
+    overflow: hidden;
+    padding: 5px;
+    vertical-align: top;
+    width: 15%;
+    height: 150px;
+}
+.search-blob {
+    background-color: #008000;
+    color: #FFFFFF;
+    height: 40px;
+    left: -80px;
+    padding-bottom: 3px;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 6px;
+    position: fixed;
+    text-align: center;
+    top: 200px;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50% 0;
+    vertical-align: middle;
+    width: 200px;
+  /* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  -o-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  /* Should be unset in IE9+ I think. */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+     
+}
+.container {
+  margin-bottom: 150px;
+}
+
+.details {
+  max-height: none;
+}

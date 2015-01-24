@@ -79,3 +79,49 @@ angular.module('angular-client-side-auth').service('popupService',function($wind
         return $window.confirm(message);
     }
 });
+
+
+    
+angular.module('angular-client-side-auth')
+  .factory('googleFactory', function ($q, $http) {
+    return {
+      getSearchResults: function (query) {
+        var deferred = $q.defer(),
+          host = 'https://ajax.googleapis.com/ajax/services/search/web',
+          args = {
+            'version': '1.0',
+            'searchTerm': query,
+            'results': '6',
+            'callback': 'JSON_CALLBACK'
+          },
+          params = ('?v=' + args.version + '&q=' + args.searchTerm + '&rsz=' +
+            args.results + '&callback=' + args.callback),
+          httpPromise = $http.jsonp(host + params);
+ 
+        httpPromise.then(function (response) {
+          deferred.resolve(response);
+        }, function (error) {
+          console.error(error);
+        });
+ 
+        return deferred.promise;
+      }
+    };
+  });
+
+angular.module('angular-client-side-auth')
+  .factory('Data', function () {
+
+   var data = {
+        query: ''
+    };
+
+    return {
+        getQuery: function () {
+            return data.query;
+        },
+        setQuery: function (query) {
+            data.query = query;
+        }
+    };
+});

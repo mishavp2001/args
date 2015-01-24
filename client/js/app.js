@@ -20,6 +20,13 @@ angular.module('angular-client-side-auth', ['ngCookies', 'ui.router', 'ngResourc
                 access: access.public
             }
         })
+        .state('public.search', {
+            url: '/search/',
+            templateUrl: 'search',
+            data: {
+                access: access.public
+            }
+        })
         .state('public.newArgum', {
             url: '/newargum/',
             templateUrl: 'newargum',

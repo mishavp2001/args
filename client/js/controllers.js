@@ -19,13 +19,58 @@ angular.module('angular-client-side-auth')
 
 angular.module('angular-client-side-auth')
 .controller('ArgumCtrl',
-    ['$rootScope', '$scope', '$location', '$window', 'popupService', 'Auth', 'Argum', function($rootScope, $scope, $location, $window, popupService, Auth, Argum){
+    ['$rootScope', '$scope', '$location', '$window', 'popupService', 'Auth', 'Argum', 'googleFactory', '$sce', 'Data',
+     function($rootScope, $scope, $location, $window, popupService, Auth, Argum, googleFactory, $sce, Data){
 //alert("Hererere ");
     $scope.loading = true;
     $scope.loggedin = Auth.isLoggedIn();
     $scope.userRoles = Auth.userRoles;
     $scope.accessLevels = Auth.accessLevels;
     $scope.user = Auth.user;
+    $scope.query = "";
+    $scope.internal = true;
+    $scope.extUrl = "";
+    $scope.curstuf ="";
+
+  
+/*    var cx = '003884160826620754182:d_y_kgdvofg';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+*/
+    $scope.ifr=function(stuf){
+        $scope.internal = false;
+        stuf.selected = "g-serach-selected";
+        $scope.curstuf.selected = "";
+        $scope.curstuf =  stuf;
+
+        //alert(url);
+        $scope.extUrl=$sce.trustAsResourceUrl(stuf.unescapedUrl);
+    }
+
+    $scope.$watch('query', function(val) {
+                Data.setQuery(val);
+                var googleResults = function(query) {
+                    $scope.googleStuff = {};
+                    googleFactory.getSearchResults(query)
+                      .then(function (response) {
+                        $scope.googleStuff = response.data.responseData.results;
+                      }, function (error) {
+                        console.error(error);
+                      });
+
+                };
+                $scope.internal = true;
+                googleResults(val);   
+               
+    });            
+
+   //angular.element(document.querySelector("#gsc-i-id1")).attr("ng-model", "query");
+  
 
 //alert("$scope.username" + $scope.user.username);
 $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password});  
@@ -62,6 +107,7 @@ $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.us
                 $rootScope.error = "Failed to login";
             });
     };
+
 
     $scope.loginOauth = function(provider) {
         $window.location.href = '/auth/' + provider;
@@ -101,13 +147,47 @@ angular.module('angular-client-side-auth')
     //updateStars();
     //alert($scope.rating);
 
-}).controller('ArgumCreateController',function($scope,$state,$stateParams,Argum, Auth){
+}).controller('ArgumCreateController',function($scope,$state,$stateParams,Argum, googleFactory, Auth, Data, $sce){
 
     $scope.argum=new Argum();
+    $scope.argum.title = Data.getQuery();
     $scope.rating = $scope.argum.vote;
     $scope.user = Auth.user;
     $scope.argum.user = $scope.user.username;
     $scope.argum.date = new Date();
+    $scope.internal = true;
+    $scope.extUrl = "";
+    $scope.curstuf ="";
+    $scope.query = "";
+
+
+      $scope.ifr=function(stuf){
+        $scope.internal = false;
+        stuf.selected = "g-serach-selected";
+        $scope.curstuf.selected = "";
+        $scope.curstuf =  stuf;
+
+        //alert(url);
+        $scope.extUrl=$sce.trustAsResourceUrl(stuf.unescapedUrl);
+    }
+
+    $scope.$watch('query', function(val) {
+                Data.setQuery(val);
+                var googleResults = function(query) {
+                    $scope.googleStuff = {};
+                    googleFactory.getSearchResults(query)
+                      .then(function (response) {
+                        $scope.googleStuff = response.data.responseData.results;
+                      }, function (error) {
+                        console.error(error);
+                      });
+
+                };
+                $scope.internal = true;
+                googleResults(val);   
+               
+    });          
+
     $scope.rateFunction = function(rating, obj, solutionargs) {
         //alert("Rating selected - " + rating);
         //$scope.argum.vote = rating;
