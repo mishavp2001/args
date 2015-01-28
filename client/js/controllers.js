@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-angular.module('angular-client-side-auth')
+angular.module('argums-app')
 .controller('NavCtrl', ['$rootScope', '$scope', '$location', 'Auth', '$state', function($rootScope, $scope, $location, Auth, $state) {
     $scope.user = Auth.user;
     $scope.userRoles = Auth.userRoles;
@@ -17,7 +17,7 @@ angular.module('angular-client-side-auth')
     };
 }]);
 
-angular.module('angular-client-side-auth')
+angular.module('argums-app')
 .controller('CategoriesCtrl', 
     ['$rootScope', '$scope', '$location', '$window', 'popupService', 'Auth', 'Argum', 'Categories',  '$sce', 'Data', 'googleFactory',  '$q',
      function($rootScope, $scope, $location, $window, popupService, Auth, Argum, Categories,  $sce, Data, googleFactory, $q){
@@ -163,7 +163,7 @@ angular.module('angular-client-side-auth')
 
 }]);
 
-angular.module('angular-client-side-auth')
+angular.module('argums-app')
 .controller('ArgumCtrl',
     ['$rootScope', '$scope', '$location', '$window', 'popupService', 'Auth', 'Argum', 'googleFactory', '$sce', 'Data',
      function($rootScope, $scope, $location, $window, popupService, Auth, Argum, googleFactory, $sce, Data){
@@ -259,7 +259,7 @@ angular.module('angular-client-side-auth')
 
 }]);
 
-angular.module('angular-client-side-auth')
+angular.module('argums-app')
 .controller('LoginCtrl',
 ['$rootScope', '$scope', '$location', '$window', 'Auth', function($rootScope, $scope, $location, $window, Auth) {
 
@@ -283,7 +283,7 @@ angular.module('angular-client-side-auth')
     };
 }]);
 
-angular.module('angular-client-side-auth')
+angular.module('argums-app')
 .controller('ArgumViewController',function($scope,$stateParams,Argum){
 
     $scope.argum=Argum.get({id:$stateParams.id});
@@ -532,7 +532,7 @@ angular.module('angular-client-side-auth')
 
 }]);
 
-angular.module('angular-client-side-auth')
+angular.module('argums-app')
 .controller('RegisterCtrl',
 ['$rootScope', '$scope', '$location', 'Auth', function($rootScope, $scope, $location, Auth) {
     $scope.role = Auth.userRoles.user;
@@ -553,7 +553,7 @@ angular.module('angular-client-side-auth')
     };
 }]);
 
-angular.module('angular-client-side-auth')
+angular.module('argums-app')
 .controller('AdminCtrl',
 ['$rootScope', '$scope', 'Users', 'Auth', function($rootScope, $scope, Users, Auth) {
     $scope.loading = true;

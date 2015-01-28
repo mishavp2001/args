@@ -1,5 +1,5 @@
 {
-  "name": "angular-client-side-auth",
+  "name": "argums-app",
   "version": "0.0.1",
   "dependencies": {
     "body-parser": "~1.4.3",
@@ -27,9 +27,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fnakstad/angular-client-side-auth"
+    "url": "https://github.com/mishavp2001/argums"
   },
-  "subdomain": "angular-client-side-auth",
+  "subdomain": "argums-app",
   "scripts": {
     "start": "grunt dev",
     "test": "grunt test",

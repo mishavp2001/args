@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angular-client-side-auth')
+angular.module('argums-app')
 .directive('accessLevel', ['Auth', function(Auth) {
     return {
         restrict: 'A',
@@ -33,7 +33,7 @@ angular.module('angular-client-side-auth')
     };
 }]);
 
-angular.module('angular-client-side-auth').directive('activeNav', ['$location', function($location) {
+angular.module('argums-app').directive('activeNav', ['$location', function($location) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
@@ -66,7 +66,7 @@ angular.module('angular-client-side-auth').directive('activeNav', ['$location', 
 
 }]);
 
-angular.module('angular-client-side-auth').directive('starRating', ['$location', function($location) {
+angular.module('argums-app').directive('starRating', ['$location', function($location) {
     return {
             restrict : 'A',
             template : '<ul class="rating {{color}}" >'

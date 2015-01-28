@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angular-client-side-auth', ['ngCookies', 'ui.router', 'ngResource', 'ui.bootstrap'])
+angular.module('argums-app', ['ngCookies', 'ui.router', 'ngResource', 'ui.bootstrap'])
 
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angular-client-side-auth')
+angular.module('argums-app')
 .factory('Auth', function($http, $cookieStore){
      //alert("Here Auth");
     var accessLevels = routingConfig.accessLevels
@@ -54,7 +54,7 @@ angular.module('angular-client-side-auth')
     };
 });
 
-angular.module('angular-client-side-auth')
+angular.module('argums-app')
 .factory('Users', function($http) {
     return {
         getAll: function(success, error) {
@@ -65,7 +65,7 @@ angular.module('angular-client-side-auth')
 });
 
 
-angular.module('angular-client-side-auth')
+angular.module('argums-app')
 .factory('Argum',function($resource){
     return $resource('/api/argums/:id?username=:username',{id:'@_id', username:'@username'},{
         update: {
@@ -75,7 +75,7 @@ angular.module('angular-client-side-auth')
     });
 });
 
-angular.module('angular-client-side-auth')
+angular.module('argums-app')
 .factory('Categories',function($http, $q){
     return{
         query: function(success, error) {
@@ -85,7 +85,7 @@ angular.module('angular-client-side-auth')
        
 })
 
-angular.module('angular-client-side-auth').service('popupService',function($window){
+angular.module('argums-app').service('popupService',function($window){
     this.showPopup=function(message){
         return $window.confirm(message);
     }
@@ -93,7 +93,7 @@ angular.module('angular-client-side-auth').service('popupService',function($wind
 
 
     
-angular.module('angular-client-side-auth')
+angular.module('argums-app')
   .factory('googleFactory', function ($q, $http) {
     return {
       getSearchResults: function (query) {
@@ -120,7 +120,7 @@ angular.module('angular-client-side-auth')
     };
   });
 
-angular.module('angular-client-side-auth')
+angular.module('argums-app')
   .factory('Data', function () {
 
    var data = {
