@@ -1,0 +1,107 @@
+<div class="search-bar">
+    <input ng-model="query" type="search" placeholder="search" class="topcoat-search-input search-key">
+    <select ng-model="argums.category" ng-change="loadargums(argums.category)"
+        ng-options="opt.title as opt.title for opt in options">
+    </select>
+
+    <a ui-sref="public.newArgum" class="btn btn-success">Add New Problem</a>
+</div>
+
+
+<div class="cat-result">
+  <table class="table argumcattable" ng-show="internal">
+  <tr>
+      <td><h4>Problems</h4></td>
+      <td><h4>Votes</h4></td>
+       <td><h4>Best Solutions</h4></td>
+       <td><h4></h4></td>
+  </tr>
+  <tr ng-repeat="argum in argums| filter:query | orderBy:'vote':false">
+      <td class="problem-col" ng-mouseleave="details=false" ng-mouseover="details=true">
+          <a access-level="accessLevels.user" ui-sref="editArgum({id:argum._id})">{{argum.title}}</a> 
+          <a ng-hide="loggedin" ui-sref="viewArgum({id:argum._id})">{{argum.title}}</a> 
+          <p ng-class="{details: details}" class="arg-details" >
+              <span >{{argum.details}}</span>
+              <span class="ellipsis">
+                  &#133;
+              </span>
+              <span class="fill"></span>   
+          </p>    
+      </td>
+      <td class="star-col">
+          <span ng-model="argum.vote" class="star-rating" star-rating rating-value="{{argum.vote}}" max="10" off="true" on-rating-selected="rateFunction(rating)"></span>
+        
+      </td>
+      <td class="argums-col">
+          <span accordion close-others="false" ng-hide="!argum.solutions[0].title">
+              <div ng-class='{best:$first}' ng-repeat="solution in argum.solutions|orderBy:'score':true| limitTo:2">
+               <div accordion-group  >
+               <div accordion-heading > {{solution.title}} <span class="score">{{solution.score}}</span></div>
+                  <div>{{solution.details}}</div>
+                  <div class="float-left">
+                      <ul class="argums-list">
+                           <li ng-repeat="pro in solution.pros| orderBy:'rating':true"> 
+                                  <p>{{pro.title}}</p>
+                                  <span class="star-rating" star-rating rating-value="{{pro.rating}}" off="true" color="green" code="&#9878;" max="10" ></span> {{pro.rating}}
+                                  <div class="bottom" />
+                           </li>
+                      </ul>
+                  </div>
+                  <div class="float-right">
+                      <ul class="argums-list">
+                           <li ng-repeat="con in solution.cons| orderBy:'rating':true"> 
+                                  <p>{{con.title}}</p> 
+                                    <span class="star-rating" star-rating rating-value="{{con.rating}}" off="true" color="red" code="&#9878;" max="10" ></span>{{con.rating}}
+                                    <div class="bottom" />
+                           </li>
+                      </ul> 
+                  </div>
+             </div>
+          </div>
+
+          </span>
+
+
+          <span ng-show="!argum.solutions[0].title"> <a class="btn btn-primary" ui-sref="editArgum({id:argum._id})">Add Solution</a></span>
+              
+      </td>
+      <td>
+          <a class="btn btn-primary" ui-sref="viewArgum({id:argum._id})">View</a>
+          <a  class="btn btn-primary" ui-sref="editArgum({id:argum._id})">Edit</a>
+          <a access-level="accessLevels.user" class="btn btn-danger"  ng-click="deleteArgum(argum)">Delete</a>
+      </td>
+  </tr>
+  <tr><td colspan="3">
+
+  </td></tr>
+  </table>
+</div>  
+
+<ul class="cat-query">
+   <li  ng-hide="countCategory(category.title)==0" ng-show="countCategory(category.title)!=0" ng-class="category.selected" ng-repeat="category in categories| orderBy:'title':false">
+      <a href=""  ng-click="selectcat(category)">{{category.title}}({{countCategory(category.title)}})</a>
+    </li>
+</ul>
+
+
+
+<a ng-click="internal=true" class="search-blob"  ng-hide="internal" href="">Open Internal Search</a>
+
+<iframe id="my-frame" name="my-frame" ng-src="{{extUrl}}" ng-hide="internal"></iframe>
+
+<div ng-show="googleStuff.length" id="footer">
+<div class='g-search'>
+
+<ul>
+  <li ng-class="stuff.selected" class="g-serach-list"
+      ng-repeat="stuff in googleStuff">
+    <a href=""  ng-click="ifr(stuff)"
+       target="my-frame"><b>{{stuff.visibleUrl}}</b></a>
+ 
+    <div class="text-muted">{{stuff.titleNoFormatting}}</div>
+  </li>
+</ul>
+
+</div>
+
+</div>

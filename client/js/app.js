@@ -27,6 +27,28 @@ angular.module('angular-client-side-auth', ['ngCookies', 'ui.router', 'ngResourc
                 access: access.public
             }
         })
+        .state('public.faq', {
+            url: '/faq/',
+            templateUrl: 'faq',
+            data: {
+                access: access.public
+            }
+        })
+        .state('public.categories', {
+            url: '/categories/',
+            controller:'CategoriesCtrl',
+            templateUrl: 'categories',
+            data: {
+                access: access.public
+            }
+        })
+        .state('public.email', {
+            url: '/email/',
+            templateUrl: 'email',
+            data: {
+                access: access.public
+            }
+        })
         .state('public.newArgum', {
             url: '/newargum/',
             templateUrl: 'newargum',

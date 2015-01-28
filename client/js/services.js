@@ -56,9 +56,10 @@ angular.module('angular-client-side-auth')
 
 angular.module('angular-client-side-auth')
 .factory('Users', function($http) {
-        return {
+    return {
         getAll: function(success, error) {
-            $http.get('/users').success(success).error(error);
+            $http.get('/users').success(function(res) {      
+            }).error(error);
         }
     };
 });
@@ -72,6 +73,16 @@ angular.module('angular-client-side-auth')
         }
 
     });
+});
+
+angular.module('angular-client-side-auth')
+.factory('Categories',function($http, $q){
+    return{
+        query: function(success, error) {
+             return $http.get('/api/categories');
+        }
+    }
+       
 })
 
 angular.module('angular-client-side-auth').service('popupService',function($window){

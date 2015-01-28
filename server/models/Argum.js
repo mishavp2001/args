@@ -8,9 +8,11 @@ var Schema=mongoose.Schema;
 var argumSchema=new Schema({
     title: 'String',
     details: 'String',
+    criterias: [],
     publishDate: 'String',
     vote: 'String',
     user: 'String',
+    category: 'String',
     share: 'Boolean',
     date: 'Date',
     solutions: [

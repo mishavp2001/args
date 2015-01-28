@@ -332,3 +332,59 @@ td.text-left {
 .details {
   max-height: none;
 }
+
+.nav-social {
+  float: right;
+}
+
+.cat-results{
+  float:right;
+  border: 1px solid black;
+  padding-right: 10px;
+  padding-left: 20px;
+}
+.catselected {
+  padding-left: 3px;
+  background-color: black;
+  color: white;
+}
+.catselected  a, .catselected  a:hover, .catselected  a:focus {
+  color: white;
+
+}
+.catnotselected {
+  background-color: none;
+}
+.cat-query {
+    float: left;
+    height: 100%;
+    padding-left: 10px;
+    list-style-type: none;
+}
+.table.argumcattable {
+    width: 80%;
+    float: left;
+ }
+ 
+.argumcattable tr td.problem-col {
+    width: 30%;
+}
+.argumcattable tr td.star-col {
+    width: 15%;
+    font-size:1em;
+} 
+.argumcattable tr td.argums-col {
+    width: 30%;
+} 
+
+.argum-edit-nav > input {
+    width: 100%;
+}
+
+.argum-edit-nav {
+  float: right;
+  width: 20%;
+}
+.probselected {
+  background-color: #DCDCDC;
+}

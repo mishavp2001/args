@@ -5,9 +5,14 @@ var _ =           require('underscore')
     , UserCtrl =  require('./controllers/user')
     , User =      require('./models/User.js')
     , userRoles = require('../client/js/routingConfig').userRoles
-    , accessLevels = require('../client/js/routingConfig').accessLevels;
+    , accessLevels = require('../client/js/routingConfig').accessLevels
+    , nodemailer = require('nodemailer')
+    ,tranport = require('nodemailer-direct-transport') 
+    ,nodeExcel = require('excel-export');
 
 var Argum=require('./models/Argum');
+var Category=require('./models/Category');
+
 
 var express=require('express');
 
@@ -22,13 +27,21 @@ var routes = [
         path: '/api/argums',
         httpMethod: 'GET',
         middleware: [(function(req,res){
-            console.log('Req' + req.query.username)
-              Argum.find({"$or" :[{'share':true}, {'user':req.query.username}]},  function(err,argums){
-                
-               if(err)
+            console.log('Req' + req.query.username);
+            if(!req.query.category) {
+                Argum.find({"$or" :[{'share':true}, {'user':req.query.username}] },  function(err,argums){
+                if(err)
                     res.send(err);
-               res.json(argums);
-           });
+                    res.json(argums);
+                });
+            } else {
+                Argum.find({"$or" :[{'share':true}, {'user':req.query.username}] , 'category':req.query.category },  function(err,argums){
+                if(err)
+                    res.send(err);
+                    res.json(argums);
+                });
+            }
+              
         })]
     },
     {
@@ -109,6 +122,44 @@ var routes = [
 
                 res.json({ message: 'Successfully deleted' });
                });
+        })]
+    },
+    // Categories
+    {
+        path: '/api/categories',
+        httpMethod: 'GET',
+        middleware: [(function(req,res){
+            console.log('Categories')
+              Category.find({},  function(err,categories){
+                
+               if(err)
+                    res.send(err);
+               res.json(categories);
+           });
+        })]
+    },
+     {
+        path: '/api/categories/:id',
+        httpMethod: 'PUT',
+        middleware: [(function(req,res){
+            Category.findOne({_id:req.params.id},function(err,category){
+
+            if(err)
+                res.send(err);
+
+           for(prop in req.body){
+                category[prop]=req.body[prop];
+           }
+
+            // save the argums
+            category.save(function(err) {
+                if (err)
+                    res.send(err);
+
+                res.json({ message: 'Category updated!' });
+            });
+
+           });
         })]
     },
     // Views
@@ -199,6 +250,75 @@ var routes = [
         middleware: [UserCtrl.index],
         accessLevel: accessLevels.admin
     },
+
+    {   path: '/api/excell/',
+        httpMethod: 'GET',
+        middleware: [function(req,res) {
+            console.log("Excell route");
+            var conf ={};
+            conf.cols=[{
+            caption:'Users',
+            type:'String',
+            width:200
+            }];
+            //conf.stylesXmlFile = "styles.xml";
+            var users = User.findAll();
+
+            var arr = _.chain(users)
+            .toArray();
+
+            console.log("Users = " + arr[0]); 
+            conf.rows = arr;
+            //conf.rows.push(users);
+
+          var result = nodeExcel.execute(conf);
+            console.log("Result=" + result);
+          res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+          res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
+          res.end(result, 'binary');
+        }]        
+    },
+
+    {   path: '/sendemail/',
+        httpMethod: 'POST',
+        middleware: [function(req,res) {
+                console.log("Email route");
+                var mailOpts, smtpConfig;
+
+
+                var directTransport = require('nodemailer-direct-transport');  
+                var opts = {
+                    service: 'Gmail',
+                        auth: {
+                        user: "michaepol@gmail.com",
+                        pass: "mteccxn1"
+                    }  
+                };
+                var smtpConfig = nodemailer.createTransport(directTransport(opts)); 
+
+               
+                //construct the email sending module
+                mailOpts = {
+                from: req.body.name + ' &lt;' + req.body.email + '&gt;',
+                to: ' mishavp2001@yahoo.com, michaepol@gmail.com',
+                //replace it with id you want to send multiple must be separated by ,(comma)
+                subject: 'contact form',
+                text: req.body.message
+                };
+                //send Email
+                smtpConfig.sendMail(mailOpts, function (error, response) {
+                    //Email not sent
+                    if (error) {
+                        res.end("Email send Falied" + error);
+                    }
+                    //email sent successfully
+                    else {
+                     res.end("Email sent successfully");
+                    }
+                });
+        }]        
+    },
+
 
     // All other get requests should be handled by AngularJS's client-side routing system
     {

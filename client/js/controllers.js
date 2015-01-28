@@ -18,30 +18,174 @@ angular.module('angular-client-side-auth')
 }]);
 
 angular.module('angular-client-side-auth')
-.controller('ArgumCtrl',
-    ['$rootScope', '$scope', '$location', '$window', 'popupService', 'Auth', 'Argum', 'googleFactory', '$sce', 'Data',
-     function($rootScope, $scope, $location, $window, popupService, Auth, Argum, googleFactory, $sce, Data){
-//alert("Hererere ");
+.controller('CategoriesCtrl', 
+    ['$rootScope', '$scope', '$location', '$window', 'popupService', 'Auth', 'Argum', 'Categories',  '$sce', 'Data', 'googleFactory',  '$q',
+     function($rootScope, $scope, $location, $window, popupService, Auth, Argum, Categories,  $sce, Data, googleFactory, $q){
+    
+  
     $scope.loading = true;
     $scope.loggedin = Auth.isLoggedIn();
     $scope.userRoles = Auth.userRoles;
     $scope.accessLevels = Auth.accessLevels;
     $scope.user = Auth.user;
     $scope.query = "";
+    $scope.catquery = "";
+    $scope.internal = true;
+    $scope.extUrl = "";
+    $scope.curstuf ="";
+    $scope.curcat ="";
+    
+   
+    $scope.loadargums = function(cat){
+        $scope.curcat.selected = "";
+        $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password,  'category': cat});
+        $scope.argums.category = cat;  
+    }
+
+
+    Array.prototype.count = function(obj){
+        var count = this.length;
+        if(typeof(obj) !== "undefined"){
+            var i = 0;
+            var array = this.slice(0), count = 0; // clone array and reset count
+            //alert(array[i].category);
+            for(i = 0; i < array.length; i++){
+                if(array[i].category == obj){
+                    count++;
+                    //alert(count);
+                }
+            }
+        }
+        return count;
+    }
+    $scope.allargums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password}); 
+    $scope.argums=$scope.allargums;  
+
+      //var deferred = $q.defer();
+    var deferred = Categories.query();
+    deferred.then(
+        function(data){
+            $scope.categories = data.data;
+            $scope.options = data.data;
+            //alert($scope.argum.category);
+            $scope.selectedItem = $scope.argums.category;
+
+        },
+        function(error) {
+                 // $log.error('failure loading movie', errorPayload);
+        }
+    );
+
+
+    $scope.countCategory = function(cat){
+        return $scope.allargums.count(cat); 
+    }
+ 
+    //$scope.total = $scope.argums.length;
+    //alert($scope.argums);
+    $scope.moto="Welcome to our site!";
+
+    $scope.selectcat=function(cat){
+        cat.selected = "catselected";
+        $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password,  'category': cat.title});
+        $scope.curcat.selected = "";
+        $scope.curcat =  cat;
+        $scope.argums.category = cat.title;
+    }   
+    
+
+    $scope.deleteArgum=function(Argum){
+        if(!$scope.loggedin | Argum.user != $scope.user.username){
+            alert("You don't have access");
+            return;
+        }   
+        if(popupService.showPopup('Really delete this?')){
+            Argum.$delete(function(){
+                $window.location.href='';
+            });
+        }
+    }
+    $scope.rememberme = true;
+    $scope.login = function() {
+        Auth.login({
+                username: $scope.username,
+                password: $scope.password,
+                rememberme: $scope.rememberme
+            },
+            function(res) {
+                $location.path('/');
+            },
+            function(err) {
+                $rootScope.error = "Failed to login";
+            });
+    };
+
+
+    $scope.loginOauth = function(provider) {
+        $window.location.href = '/auth/' + provider;
+    };
+
+     $scope.internal = true;
+    $scope.extUrl = "";
+    $scope.curstuf ="";
+
+
+    $scope.ifr=function(stuf){
+        $scope.internal = false;
+        stuf.selected = "g-serach-selected";
+        $scope.curstuf.selected = "";
+        $scope.curstuf =  stuf;
+
+        //alert(url);
+        $scope.extUrl=$sce.trustAsResourceUrl(stuf.unescapedUrl);
+    }
+
+    $scope.$watch('query', function(val) {
+        Data.setQuery(val);
+        var googleResults = function(query) {
+            $scope.googleStuff = {};
+            googleFactory.getSearchResults(query)
+              .then(function (response) {
+                $scope.googleStuff = response.data.responseData.results;
+              }, function (error) {
+                console.error(error);
+              });
+
+        };
+        $scope.internal = true;
+        if (val != "") {
+            googleResults(val);
+            stLight.options({publisher: "5ef2a14c-fbbc-45a1-96eb-8b6c89f9e010", doNotHash: false, doNotCopy: false, hashAddressBar: false});
+
+        }       
+               
+    });        
+
+}]);
+
+angular.module('angular-client-side-auth')
+.controller('ArgumCtrl',
+    ['$rootScope', '$scope', '$location', '$window', 'popupService', 'Auth', 'Argum', 'googleFactory', '$sce', 'Data',
+     function($rootScope, $scope, $location, $window, popupService, Auth, Argum, googleFactory, $sce, Data){
+//alert("Hererere ");
+    $scope.loading = true;
+    $scope.loggedin = Auth.isLoggedIn();
+
+    if (!$scope.loggedin) {
+        $location.path("login");
+    }
+
+    $scope.userRoles = Auth.userRoles;
+    $scope.accessLevels = Auth.accessLevels;
+    $scope.user = Auth.user;
+    $scope.query = "";
+    $scope.catquery = "";
+    
     $scope.internal = true;
     $scope.extUrl = "";
     $scope.curstuf ="";
 
-  
-/*    var cx = '003884160826620754182:d_y_kgdvofg';
-    var gcse = document.createElement('script');
-    gcse.type = 'text/javascript';
-    gcse.async = true;
-    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-        '//www.google.com/cse/cse.js?cx=' + cx;
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(gcse, s);
-*/
+
     $scope.ifr=function(stuf){
         $scope.internal = false;
         stuf.selected = "g-serach-selected";
@@ -65,19 +209,19 @@ angular.module('angular-client-side-auth')
 
                 };
                 $scope.internal = true;
-                googleResults(val);   
+                if (val != "") {
+                    googleResults(val);
+                    stLight.options({publisher: "5ef2a14c-fbbc-45a1-96eb-8b6c89f9e010", doNotHash: false, doNotCopy: false, hashAddressBar: false});
+
+                }       
                
     });            
 
-   //angular.element(document.querySelector("#gsc-i-id1")).attr("ng-model", "query");
-  
-
-//alert("$scope.username" + $scope.user.username);
-$scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password});  
+    $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password});  
     /*$scope.argums=Argum.getAll(  
                 {username: $scope.username,
                 password: $scope.password} );
-*/
+    */
     //{name: $scope.username, password:$scope.password }
     //alert($scope.argums);
     $scope.moto="Welcome to our site!";
@@ -228,13 +372,75 @@ angular.module('angular-client-side-auth')
     }
 
 }).controller('ArgumEditController',
-    ['$rootScope', '$scope', '$location', '$window', 'Auth', '$state', '$stateParams', 'Argum', function($rootScope, $scope, $location, $window, Auth, $state,$stateParams,Argum) {
+    ['$rootScope', '$scope', '$location', '$window', 'Auth', '$state', '$q', '$stateParams', 'Argum', 'Categories', 'Data', 
+        function($rootScope, $scope, $location, $window, Auth, $state, $q, $stateParams, Argum, Categories, Data) {
 
     $scope.user = Auth.user;
     $scope.userRoles = Auth.userRoles;
     $scope.accessLevels = Auth.accessLevels;
 
-  
+
+    $scope.loading = true;
+    $scope.loggedin = Auth.isLoggedIn();
+
+    if (!$scope.loggedin) {
+        $location.path("login");
+    }
+
+    $scope.query = "";
+    $scope.catquery = "";
+    
+    $scope.internal = true;
+    $scope.extUrl = "";
+    $scope.curstuf ="";
+
+
+    $scope.ifr=function(stuf){
+        $scope.internal = false;
+        stuf.selected = "g-serach-selected";
+        $scope.curstuf.selected = "";
+        $scope.curstuf =  stuf;
+
+        //alert(url);
+        $scope.extUrl=$sce.trustAsResourceUrl(stuf.unescapedUrl);
+    }
+
+    $scope.$watch('query', function(val) {
+                Data.setQuery(val);
+                var googleResults = function(query) {
+                    $scope.googleStuff = {};
+                    googleFactory.getSearchResults(query)
+                      .then(function (response) {
+                        $scope.googleStuff = response.data.responseData.results;
+                      }, function (error) {
+                        console.error(error);
+                      });
+
+                };
+                $scope.internal = true;
+                if (val != "") {
+                    googleResults(val);
+                    stLight.options({publisher: "5ef2a14c-fbbc-45a1-96eb-8b6c89f9e010", doNotHash: false, doNotCopy: false, hashAddressBar: false});
+
+                }       
+               
+    });            
+
+    $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password});  
+
+
+    $scope.deleteArgum=function(Argum){
+        if(!$scope.loggedin | Argum.user != $scope.user.username){
+            alert("You don't have access");
+            return;
+        }   
+        if(popupService.showPopup('Really delete this?')){
+            Argum.$delete(function(){
+                $window.location.href='';
+            });
+        }
+    }
+
     $scope.rateFunction = function(rating, obj, solution) {
         //alert("Rating selected - " + rating);
         //$scope.argum.vote = rating;
@@ -310,6 +516,20 @@ angular.module('angular-client-side-auth')
     };
 
     $scope.loadArgum();
+
+    var deferred = Categories.query();
+    deferred.then(
+        function(data){
+            $scope.categories = data.data;
+            $scope.options = data.data;
+            //alert($scope.argum.category);
+            $scope.selectedItem = $scope.argum.category;
+        },
+        function(error) {
+                 // $log.error('failure loading movie', errorPayload);
+        }
+    );
+
 }]);
 
 angular.module('angular-client-side-auth')

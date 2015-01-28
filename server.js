@@ -10,11 +10,16 @@ var express =           require('express')
     , session =         require('express-session')
     , csrf =            require('csurf')
     ,mongoose = require('mongoose')
+    ,nodeExcel = require('excel-export')
+    ,nodemailer = require('nodemailer')
+    ,tranport = require('nodemailer-direct-transport') 
     , User =            require('./server/models/User.js');
 
-var argums = require('./server/argum_routes.js');
 
 var app = module.exports = express();
+
+require('./server/argum_routes.js');
+
     
 app.set('views', __dirname + '/client/views');
 app.set('view engine', 'jade');
