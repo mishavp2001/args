@@ -334,7 +334,10 @@ td.text-left {
 }
 
 .nav-social {
-  float: right;
+    float: right;
+    left: 92%;
+    position: absolute;
+    top: 30%;
 }
 
 .cat-results{
