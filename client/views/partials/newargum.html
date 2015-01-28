@@ -1,0 +1,90 @@
+<form class="form-horizontal" role="form" ng-submit="addArgum()">
+  
+<table class="table movietable form-group">
+    <tr>
+        <td>
+            <h3> <input type="text" ng-model="argum.title" class="form-control" id="title" placeholder="Problem Title Here"/></h3>
+
+           <div class="star-rating"  star-rating rating-value="{{argum.vote}}" max="10" on-rating-selected="rateFunction(rating, argum)"></div>
+            <input type="hidden" ng-model="argum.vote" class="form-control" id="details" placeholder="Details"/> 
+            <input type="hidden" ng-model="user.username"  id="user" placeholder="user"/>
+            <input type="hidden" ng-model="argum.date"  id="date" placeholder="date"/> 
+                
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input type="text" ng-model="argum.details" class="form-control" id="details" placeholder="Details"/> 
+        </td>
+    </tr>
+ </table>
+
+ <table accordion class="table">
+    <tr accordion-group heading="{{solution.title}}" ng-repeat="solution in argum.solutions">
+        <td colspan="2">
+            <h3>Solution {{$index +1}} - <span ng-model="solution.title">{{solution.title}}</span></h3>
+            <h3>
+                <input type="text" ng-model="solution.title" class="form-control" id="title" placeholder="title"/> 
+            </h3>
+            <div>
+                <textarea class="txt-wide" ng-model="solution.details"  id="title" placeholder="Details"></textarea> 
+            </div>
+            <div class="comp float-left">
+                <div class="comp-header">PROS</div>
+                <ul>
+                     <li ng-repeat="pro in solution.pros| orderBy:'rating':true"> 
+                            <input type="text" ng-model="pro.title" class="form-control" id="title" placeholder="PRO"/> 
+                            - {{pro.rating}}
+                            <span class="star-rating" star-rating rating-value="{{pro.rating}}" max="10" on-rating-selected="rateFunction(rating, pro)"></span>
+                            <input type="hidden" ng-model="pro.rating" class="form-control" id="pro{{$index}}" placeholder="Details"/> 
+                     </li>
+            </ul>
+            <input ng-click="addNewPro(solution)" class="btn" value="Add"/>
+            </div>  
+            <div class="comp float-left">
+                <div class="comp-header">CONS</div>
+                <ul>
+                     <li ng-repeat="con in solution.cons| orderBy:'rating':true"> 
+                            <input type="text" ng-model="con.title" class="form-control" id="title" placeholder="CON"/> 
+                            - {{con.rating}}
+                            <span class="star-rating" star-rating rating-value="{{con.rating}}" max="10" on-rating-selected="rateFunction(rating, con)"></span>
+                            <input type="hidden" ng-model="con.rating" class="form-control" id="cons{{$index}}" placeholder="Details"/> 
+                     </li>
+                </ul> 
+                <input ng-click="addNewCon(solution)" class="btn" value="Add"/>
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+        <input ng-click="addNewSolution()" class="btn btn-primary" value="Add New Solution"/>
+        <input type="submit" class="btn btn-primary" value="Save"/>
+    </div>
+</div>
+
+</form>
+
+<div class="search-bar">
+    <input ng-model="query" type="search" placeholder="search" class="topcoat-search-input search-key">
+</div>
+<a ng-click="internal=true" class="search-blob"  ng-hide="internal" href="">Open Internal Search</a>
+
+<iframe id="my-frame" name="my-frame" ng-src="{{extUrl}}" ng-hide="internal"></iframe>
+
+<div ng-show="googleStuff.length" id="footer">
+<div class='g-search'>
+
+<ul>
+  <li ng-class="stuff.selected" class="g-serach-list"
+      ng-repeat="stuff in googleStuff">
+    <a href=""  ng-click="ifr(stuff)"
+       target="my-frame"><b>{{stuff.visibleUrl}}</b></a>
+ 
+    <div class="text-muted">{{stuff.titleNoFormatting}}</div>
+  </li>
+</ul>
+
+</div>

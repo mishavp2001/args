@@ -1,0 +1,10 @@
+.container
+    .row
+        .col-md-4.col-md-push-6
+            div.list-group(data-ng-controller='NavCtrl')
+                .list-group-item
+                    strong Account Information menu
+                a.list-group-item(href='/private', active-nav) General Information
+                a.list-group-item(href='/private/nested', active-nav) Change Password
+                a.list-group-item(href='/private/admin', active-nav, data-access-level='accessLevels.admin') Admin
+        .col-md-6.col-md-pull-4(data-ui-view)
