@@ -45,7 +45,6 @@ html(lang='en', data-ng-app='argums-app')
                             | Welcome&nbsp;
                             strong {{ user.username }}&nbsp;
                             span.label(data-ng-class='{"label-info": user.role.title == userRoles.user.title, "label-success": user.role.title == userRoles.admin.title}') {{ user.role.title }}
-
         .container(data-ui-view)
         .ul.nav.nav-social    
                         li(data-access-level='accessLevels.public')
