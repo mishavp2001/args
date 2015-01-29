@@ -391,3 +391,40 @@ td.text-left {
 .probselected {
   background-color: #DCDCDC;
 }
+.panel-heading:hover .del-sol {
+    display: inline-block;
+    padding-left: 2px;
+}
+.panel-heading .del-sol {
+    display: none;
+}
+li.rate:hover  a.del-rate{
+    display: inline-block; 
+}
+li.rate  a.del-rate {
+  display: none; 
+}
+
+.solutions td{
+    opacity: 1;
+}
+.solutions td.ng-enter {
+    -webkit-transition: 1s;
+    transition: 1s;
+    opacity: 0;
+}
+.solutions td.ng-move {
+    -webkit-transition: 1s;
+    transition: 1s;
+    opacity: 0;
+}
+.solutions td.ng-enter-active {
+    transition: 1s;
+    opacity: 0;
+}
+.repeat-animation.ng-stagger-enter {
+    animation-delay: 50ms !important;
+    -webkit-animation-delay: 50ms !important;
+    animation-duration: 0s !important;
+    -webkit-animation-duration: 0s !important;
+}

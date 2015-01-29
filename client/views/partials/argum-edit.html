@@ -49,13 +49,16 @@
 
  <table accordion close-others="false" class="argum-table">
 
-    <tr>
-        {{argum.solutions.solution}}
-        <td  ng-class='{best:$first}' ng-repeat="solution in argum.solutions| orderBy:'score':true">
-            <div accordion-group>    
-            <div accordion-heading >{{solution.title}}  <span class="score">{{solution.score}}</span></div>
+    <tr >
+        <td class="repeat-animation animated bounceInLeft" ng-class='{best:$first}' ng-repeat="solution in argum.solutions| orderBy:'score':true">
+            <div accordion-group>  
+            <div  accordion-heading >{{solution.title}} 
+                 <span class="score">{{solution.score}} <a class="del-sol" href="" ng-click="delSol(argum.solutions, $index)" >x</a>   
+            </span>
+            </div>
             <p>
                 <input type="text" ng-model="solution.title" class="" id="title" placeholder="title"/> 
+                
                 <input type="hidden" ng-model="solution.score" id="score"></input> 
             </p>
             <div>
@@ -63,9 +66,11 @@
             </div>
             <div class="comp float-left">
                 <ul>
-                     <li ng-repeat="pro in solution.pros| orderBy:'rating':true"> 
+                     <li class= "rate" ng-repeat="pro in solution.pros| orderBy:'rating':true"> 
                             <input type="text" ng-model="pro.title" class="form-control" id="title" placeholder="PRO"/> 
-                            <span class="star-rating" star-rating rating-value="{{pro.rating}}" color="green" code="&#9878;" max="10" on-rating-selected="rateFunction(rating, pro, solution)"></span><span class="score-sm">{{pro.rating}}</span>
+                            <span class="star-rating" star-rating rating-value="{{pro.rating}}" color="green" code="&#9878;" max="10" on-rating-selected="rateFunction(rating, pro, solution)"></span><span class="score-sm">{{pro.rating}} 
+                            </span>
+                            <a class="del-rate" href="" ng-click="delProCon(solution, 'pros', $index)" >x</a> 
                             <input type="hidden" ng-model="pro.rating" class="form-control" id="pro{{$index}}" placeholder="Details"/> 
                      </li>
             </ul>
@@ -73,9 +78,11 @@
             </div>  
             <div class="comp float-left">
                 <ul>
-                     <li ng-repeat="con in solution.cons| orderBy:'rating':true"> 
+                     <li class= "rate" ng-repeat="con in solution.cons| orderBy:'rating':true"> 
                             <input type="text" ng-model="con.title" class="form-control" id="title" placeholder="CON"/> 
-                            <span class="star-rating" star-rating rating-value="{{con.rating}}" max="10" color="red" code="&#9878;" on-rating-selected="rateFunction(rating, con, solution)"></span><span class="score-sm">{{con.rating}}</span>
+                            <span class="star-rating" star-rating rating-value="{{con.rating}}" max="10" color="red" code="&#9878;" on-rating-selected="rateFunction(rating, con, solution)"></span><span class="score-sm">{{con.rating}}  
+                            </span>
+                            <a class="del-rate" href="" ng-click="delProCon(solution, 'cons', $index)" >x</a>
                             <input type="hidden" ng-model="con.rating" class="form-control" id="cons{{$index}}" placeholder="Details"/> 
                      </li>
                 </ul> 

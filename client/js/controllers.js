@@ -486,7 +486,21 @@ angular.module('argums-app')
         sol.cons.push({"title": "cons", "rating": 0});
     }
    
-     $scope.updateArgum=function(){
+    $scope.delSol=function(sol, index){
+        sol.splice(index+1, 1);
+    }
+    $scope.delProCon=function(solution, type, index){
+        if(type=='pro') {
+            solution.pros.splice(index, 1);
+        } else {
+            solution.cons.splice(index, 1);
+        }
+       
+        solution.score =  $scope.addRating(solution.pros) - $scope.addRating(solution.cons);
+        
+    }
+    
+    $scope.updateArgum=function(){
         /*alert($scope.newsolutions.length );
         if($scope.newsolution.title){
             $scope.argum.solutions.push();
