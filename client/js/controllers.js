@@ -34,7 +34,7 @@ angular.module('argums-app')
     $scope.extUrl = "";
     $scope.curstuf ="";
     $scope.curcat ="";
-    
+    $scope.myInterval = 5000;
    
     $scope.loadargums = function(cat){
         $scope.curcat.selected = "";
