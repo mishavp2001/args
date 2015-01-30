@@ -7,7 +7,9 @@ angular.module('argums-app')
     $scope.user = Auth.user;
     $scope.userRoles = Auth.userRoles;
     $scope.accessLevels = Auth.accessLevels;
-
+    $scope.myInterval = 5000;
+    $scope.hideme = false;
+   
     $scope.logout = function() {
         Auth.logout(function() {
               $state.go('argums', {}, {reload: true});
@@ -35,6 +37,7 @@ angular.module('argums-app')
     $scope.curstuf ="";
     $scope.curcat ="";
     $scope.myInterval = 5000;
+    $scope.hideme = false;
    
     $scope.loadargums = function(cat){
         $scope.curcat.selected = "";
@@ -303,6 +306,8 @@ angular.module('argums-app')
     $scope.extUrl = "";
     $scope.curstuf ="";
     $scope.query = "";
+    $scope.argum.criterias=[];
+    $scope.argum.solutions=[];
 
 
       $scope.ifr=function(stuf){
@@ -331,6 +336,16 @@ angular.module('argums-app')
                 googleResults(val);   
                
     });          
+    $scope.addRating = function(arr){
+        var sum =0;
+        var i;
+        for(i=0; i <= arr.length-1; i++ ){
+            arr[i].rating = (parseInt(arr[i].rating)!='NaN')?parseInt(arr[i].rating):0;    
+            sum = sum + arr[i].rating;
+        }
+        return parseInt(sum);
+
+    }
 
     $scope.rateFunction = function(rating, obj, solutionargs) {
         //alert("Rating selected - " + rating);
@@ -344,32 +359,47 @@ angular.module('argums-app')
         }
        // argum.solutions[index].pros[index] = rating;
     };
-     $scope.addNewSolution=function(){
+    $scope.addNewCriteria=function(){
         //alert("Here"); 
-        if(typeof($scope.argum.solutions) == 'undefined'){
-            $scope.argum.solutions = [];
-        }
-        $scope.argum.solutions.push({"title": "Solution"});
+        $scope.argum.criterias.push({"title": "", "weight":[""], "range": ""});
     }
 
+    $scope.addNewSolution=function(){
+        //alert("Here"); 
+        $scope.argum.solutions.push({"title": "Solution" + ($scope.argum.solutions.length+1)});
+    }
     $scope.addNewPro=function(sol){
         if(sol.pros == null){
             sol.pros = [];
         }
-        sol.pros.push({"title": "pro"});
+        sol.pros.push({"title": "", "rating": 0});
     }
     $scope.addNewCon=function(sol){
          if(sol.cons == null){
             sol.cons = [];
         }
-        sol.cons.push({"title": "cons"});
+        sol.cons.push({"title": "", "rating": 0});
     }
-    
+   
     $scope.addArgum=function(){
         $scope.argum.$save(function(){
             $state.go('argums');
         });
     }
+    $scope.delSol=function(sol, index){
+        sol.splice(index, 1);
+    }
+    $scope.delProCon=function(solution, type, index){
+        if(type=='pro') {
+            solution.pros.splice(index, 1);
+        } else {
+            solution.cons.splice(index, 1);
+        }
+       
+        solution.score =  $scope.addRating(solution.pros) - $scope.addRating(solution.cons);
+        
+    }
+    
 
 }).controller('ArgumEditController',
     ['$rootScope', '$scope', '$location', '$window', 'Auth', '$state', '$q', '$stateParams', 'Argum', 'Categories', 'Data', 
@@ -466,28 +496,41 @@ angular.module('argums-app')
 
     }
 
+    $scope.addNewCriteria=function(){
+        //alert("Here"); 
+        if(typeof($scope.argum.criterias) == 'underfined'){
+            $scope.argum.criterias = [];
+        }
+        $scope.argum.criterias.push({"title": ""});
+    }
+
     $scope.addNewSolution=function(){
         //alert("Here"); 
         if(typeof($scope.argum.solutions) == 'underfined'){
             $scope.argum.solutions = [];
         }
-        $scope.argum.solutions.push({"title": "Solution"});
+        $scope.argum.solutions.push({"title": "New Solution", "score": 0, "id": $scope.argum.solutions.length});
     }
     $scope.addNewPro=function(sol){
         if(sol.pros == null){
             sol.pros = [];
         }
-        sol.pros.push({"title": "pro", "rating": 0});
+        sol.pros.push({"title": "", "rating": 0});
     }
     $scope.addNewCon=function(sol){
          if(sol.cons == null){
             sol.cons = [];
         }
-        sol.cons.push({"title": "cons", "rating": 0});
+        sol.cons.push({"title": "", "rating": 0});
     }
    
-    $scope.delSol=function(sol, index){
-        sol.splice(index+1, 1);
+    $scope.delSol=function(sols, sol){
+        if (sol._id){
+             var index = sols.map(function(e) { return e._id; }).indexOf(sol._id); 
+        } else {
+            var index = sols.map(function(e) { return e.id; }).indexOf(sol.id); 
+        }     
+        sols.splice(index, 1);
     }
     $scope.delProCon=function(solution, type, index){
         if(type=='pro') {

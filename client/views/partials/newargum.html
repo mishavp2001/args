@@ -1,3 +1,23 @@
+<div class="argum-edit-nav ">
+    <input ng-model="query" type="search" placeholder="search" class="topcoat-search-input search-key">
+    <table class="table argumtable" ng-show="internal">
+        <tr>
+            <td><h4>Problems</h4></td>
+        </tr>
+        <tr ng-repeat="arg in argums| filter:query | orderBy:'vote':false">
+            <td ng-class="{probselected: arg._id==argum._id}"  class="problem-col" ng-mouseleave="details=false" ng-mouseover="details=true">
+                <a access-level="accessLevels.user" ui-sref="editArgum({id:arg._id})">{{arg.title}}</a> 
+                <a ng-hide="loggedin" ui-sref="viewArgum({id:arg._id})">{{arg.title}}</a> 
+            </td>
+        </tr>
+    </table>
+    <a ui-sref="public.newArgum" class="btn btn-success">Add New Problem</a>
+</div>
+
+<a ng-click="internal=true" class="search-blob"  ng-hide="internal" href="">Open Internal Search</a>
+
+<iframe id="my-frame" name="my-frame" ng-src="{{extUrl}}" ng-hide="internal"></iframe>
+
 <form class="form-horizontal" role="form" ng-submit="addArgum()">
   
 <table class="table movietable form-group">
@@ -14,45 +34,58 @@
     </tr>
     <tr>
         <td colspan="2">
-            <input type="text" ng-model="argum.details" class="form-control" id="details" placeholder="Details"/> 
+            <input type="text" ng-model="argum.details" class="form-control" id="details" placeholder="Add Details"/> 
+             <div ng-repeat="criteria in argum.criterias" >   
+                <input type="text" ng-model="criteria.title" class="input-group-sm" id="criterias" placeholder="Criteria"/>
+                <input type="text" ng-model="criteria.range" class="input-group-sm" id="range" placeholder="Range"/>
+                <input type="text" ng-model="criteria.weight" class="input-group-sm" id="weight" placeholder="Weight"/>
+            </div>
         </td>
     </tr>
  </table>
 
- <table accordion class="table">
-    <tr accordion-group heading="{{solution.title}}" ng-repeat="solution in argum.solutions">
-        <td colspan="2">
-            <h3>Solution {{$index +1}} - <span ng-model="solution.title">{{solution.title}}</span></h3>
-            <h3>
-                <input type="text" ng-model="solution.title" class="form-control" id="title" placeholder="title"/> 
-            </h3>
+<table accordion close-others="false" class="argum-table">
+
+    <tr >
+        <td class="repeat-animation animated bounceInLeft" ng-class='{best:$first}' ng-repeat="solution in argum.solutions| orderBy:'score':true">
+            <div accordion-group>  
+            <div  accordion-heading >{{solution.title}} 
+                 <span class="score">{{solution.score}} <a class="del-sol" href="" ng-click="delSol(argum.solutions, $index)" >x</a>   
+            </span>
+            </div>
+            <p>
+                <input type="text" ng-model="solution.title" class="" id="title" placeholder="title"/> 
+                
+                <input type="hidden" ng-model="solution.score" id="score"></input> 
+            </p>
             <div>
                 <textarea class="txt-wide" ng-model="solution.details"  id="title" placeholder="Details"></textarea> 
             </div>
             <div class="comp float-left">
-                <div class="comp-header">PROS</div>
                 <ul>
-                     <li ng-repeat="pro in solution.pros| orderBy:'rating':true"> 
+                     <li class= "rate" ng-repeat="pro in solution.pros| orderBy:'rating':true"> 
                             <input type="text" ng-model="pro.title" class="form-control" id="title" placeholder="PRO"/> 
-                            - {{pro.rating}}
-                            <span class="star-rating" star-rating rating-value="{{pro.rating}}" max="10" on-rating-selected="rateFunction(rating, pro)"></span>
+                            <span class="star-rating" star-rating rating-value="{{pro.rating}}" color="green" code="&#9878;" max="10" on-rating-selected="rateFunction(rating, pro, solution)"></span><span class="score-sm">{{pro.rating}} 
+                            </span>
+                            <a class="del-rate" href="" ng-click="delProCon(solution, 'pros', $index)" >x</a> 
                             <input type="hidden" ng-model="pro.rating" class="form-control" id="pro{{$index}}" placeholder="Details"/> 
                      </li>
             </ul>
-            <input ng-click="addNewPro(solution)" class="btn" value="Add"/>
+            <input ng-click="addNewPro(solution)" class="btn comp-header" value="Add PROS"/>
             </div>  
             <div class="comp float-left">
-                <div class="comp-header">CONS</div>
                 <ul>
-                     <li ng-repeat="con in solution.cons| orderBy:'rating':true"> 
+                     <li class= "rate" ng-repeat="con in solution.cons| orderBy:'rating':true"> 
                             <input type="text" ng-model="con.title" class="form-control" id="title" placeholder="CON"/> 
-                            - {{con.rating}}
-                            <span class="star-rating" star-rating rating-value="{{con.rating}}" max="10" on-rating-selected="rateFunction(rating, con)"></span>
+                            <span class="star-rating" star-rating rating-value="{{con.rating}}" max="10" color="red" code="&#9878;" on-rating-selected="rateFunction(rating, con, solution)"></span><span class="score-sm">{{con.rating}}  
+                            </span>
+                            <a class="del-rate" href="" ng-click="delProCon(solution, 'cons', $index)" >x</a>
                             <input type="hidden" ng-model="con.rating" class="form-control" id="cons{{$index}}" placeholder="Details"/> 
                      </li>
                 </ul> 
-                <input ng-click="addNewCon(solution)" class="btn" value="Add"/>
+                <input ng-click="addNewCon(solution)" class="btn comp-header" value="Add CONS"/>
             </div>
+        </div>    
         </td>
     </tr>
 </table>
@@ -60,31 +93,10 @@
 
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
+        <input ng-click="addNewCriteria()" class="btn btn-default" value="Add New Criteria"/>
         <input ng-click="addNewSolution()" class="btn btn-primary" value="Add New Solution"/>
         <input type="submit" class="btn btn-primary" value="Save"/>
     </div>
 </div>
 
 </form>
-
-<div class="search-bar">
-    <input ng-model="query" type="search" placeholder="search" class="topcoat-search-input search-key">
-</div>
-<a ng-click="internal=true" class="search-blob"  ng-hide="internal" href="">Open Internal Search</a>
-
-<iframe id="my-frame" name="my-frame" ng-src="{{extUrl}}" ng-hide="internal"></iframe>
-
-<div ng-show="googleStuff.length" id="footer">
-<div class='g-search'>
-
-<ul>
-  <li ng-class="stuff.selected" class="g-serach-list"
-      ng-repeat="stuff in googleStuff">
-    <a href=""  ng-click="ifr(stuff)"
-       target="my-frame"><b>{{stuff.visibleUrl}}</b></a>
- 
-    <div class="text-muted">{{stuff.titleNoFormatting}}</div>
-  </li>
-</ul>
-
-</div>

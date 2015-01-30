@@ -182,7 +182,13 @@ td.text-left {
     height: 125px;
 }
 .search-bar {
-    padding:10px 10px 12px 8px;
+    float: left;
+    margin-top: 10px;
+    padding-bottom: 12px;
+    padding-left: 8px;
+    padding-right: 10px;
+    padding-top: 10px;
+    width: 100%;
 }
 
 .search-bar > input {
@@ -427,4 +433,63 @@ li.rate  a.del-rate {
     -webkit-animation-delay: 50ms !important;
     animation-duration: 0s !important;
     -webkit-animation-duration: 0s !important;
+}
+
+#car {
+    background-color: #357EBD;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: #FFFFFF;
+    float: left;
+    font-size: 20px;
+    height: 42px;
+    margin: 15px;
+    padding-bottom: 7px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 7px;
+    width: 98%;
+}
+#car a {
+    float: right;
+    position: relative;
+    top: -40px;
+}
+#car .carousel-control.left {
+    background-image: none;
+    opacity: 0;
+}
+#car .carousel-control.right {
+    background-image: none;
+    left: auto;
+    opacity: 0;
+    right: 0;
+}
+#car .carousel-indicators {
+    display: none;
+}
+#car .carousel.fading {
+}
+#car .carousel.fading .carousel-inner > .item {
+    display: block;
+    height: 30px;
+    opacity: 0;
+    position: absolute;
+    transition-delay: 0s;
+    transition-duration: 0.9s;
+    transition-property: opacity;
+    transition-timing-function: ease-in-out;
+    width: 100%;
+}
+#car .carousel.fading .carousel-inner {
+    height: 40px;
+    text-align: left;
+}
+#car .carousel.fading .carousel-inner > .active, #car .carousel.fading .carousel-inner > .next.left {
+    opacity: 1;
+}
+#car .carousel.fading .carousel-inner > .next, #car .carousel.fading .carousel-inner > .active.left {
+    opacity: 0;
 }

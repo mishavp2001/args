@@ -42,9 +42,19 @@
     </tr>
     <tr>
         <td colspan="2">
-            <input type="text" ng-model="argum.details" class="form-control" id="details" placeholder="Details"/> 
+            <input type="text" ng-model="argum.details" class="form-control" id="details" placeholder="Add Details"/> 
+             <accordion> 
+                <div accordion-group heading="Criterias">   
+                    <div ng-repeat="criteria in argum.criterias" >   
+                        <input type="text" ng-model="criteria.title" class="input-group-sm" id="criterias" placeholder="Criteria"/>
+                        <input type="text" ng-model="criteria.range" class="input-group-sm" id="range" placeholder="Range"/>
+                        <input type="text" ng-model="criteria.weight" class="input-group-sm" id="weight" placeholder="Weight"/>
+                    </div>
+                </div>
+            </accordion>        
         </td>
     </tr>
+
  </table>
 
  <table accordion close-others="false" class="argum-table">
@@ -53,7 +63,7 @@
         <td class="repeat-animation animated bounceInLeft" ng-class='{best:$first}' ng-repeat="solution in argum.solutions| orderBy:'score':true">
             <div accordion-group>  
             <div  accordion-heading >{{solution.title}} 
-                 <span class="score">{{solution.score}} <a class="del-sol" href="" ng-click="delSol(argum.solutions, $index)" >x</a>   
+                 <span class="score">{{solution.score}} <a class="del-sol" href="" ng-click="delSol(argum.solutions, solution)" >x</a>   
             </span>
             </div>
             <p>
@@ -63,6 +73,12 @@
             </p>
             <div>
                 <textarea class="txt-wide" ng-model="solution.details"  id="title" placeholder="Details"></textarea> 
+                <accordion> 
+                <div accordion-group heading="Criteria Values">   
+                    <div ng-repeat="criteria in argum.criterias" >   
+                        <input type="text" ng-model="solution.criterias[$index].value" class="input-group-sm" id="value" placeholder="{{criteria.title}} value"/>({{criteria.title}}/{{criteria.range}}/{{criteria.weight}})
+                    </div>
+                </div>
             </div>
             <div class="comp float-left">
                 <ul>
@@ -95,8 +111,9 @@
 
 
 <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
+    <div class="">
         <input ng-click="addNewSolution()" class="btn btn-primary" value="Add New Solution"/>
+        <input ng-click="addNewCriteria()" class="btn btn-default" value="Add New Criteria"/>
         <input type="submit" class="btn btn-primary" value="Save"/>
     </div>
 </div>

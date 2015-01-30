@@ -8,7 +8,7 @@ var Schema=mongoose.Schema;
 var argumSchema=new Schema({
     title: 'String',
     details: 'String',
-    criterias: [],
+    criterias: [{id: String, title: String, range: String, weight: String}],
     publishDate: 'String',
     vote: 'String',
     user: 'String',
@@ -19,6 +19,7 @@ var argumSchema=new Schema({
 	    {	id: String,
 	    	title: 'String',
 	    	details: 'String',
+        criterias: [{value: String}],
         score: 'Number',
 	    	pros:[{id: String, title: String, details: String, rating: String}],
 	    	cons:[{id: String, title: String, details: String, rating: String}]

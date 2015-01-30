@@ -3,7 +3,7 @@ html(lang='en', data-ng-app='argums-app')
     head
         meta(charset='utf-8')
         base(href='/')
-        title Intelegent, carefuly weighted decision making tool 
+        title Intelligent, carefully weighted decision making tool
         link(rel='stylesheet', href='/css/app.css')
         link(href="/components/bootstrap/dist/css/bootstrap.min.css", rel="stylesheet")
         link(href="/components/font-awesome/css/font-awesome.min.css", rel="stylesheet")
@@ -46,6 +46,8 @@ html(lang='en', data-ng-app='argums-app')
                             | Welcome&nbsp;
                             strong {{ user.username }}&nbsp;
                             span.label(data-ng-class='{"label-info": user.role.title == userRoles.user.title, "label-success": user.role.title == userRoles.admin.title}') {{ user.role.title }}
+                   include partials/add.html           
+                               
         .container(data-ui-view)
         .ul.nav.nav-social    
                         li(data-access-level='accessLevels.public')
@@ -58,7 +60,6 @@ html(lang='en', data-ng-app='argums-app')
                             a
                                 span(class='st_email' displayText='Email')
 
-        
         #alertBox.alert.alert-danger(data-ng-show="error")
             button(type="button", class="close", data-ng-click="error = null;") &times;
             strong Oh no!&nbsp;

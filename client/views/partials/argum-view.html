@@ -12,9 +12,21 @@
         <td></td>
     </tr>
     <tr>
-        <td colspan="2">{{argum.details}}</td>
-    </tr>
- </table>
+        <td colspan="2">
+            {{argum.details}}
+             <accordion> 
+                <div accordion-group heading="Criterias">   
+                     <ul >   
+                        <li  ng-repeat="criteria in argum.criterias">{{criteria.title}}
+                        weight: {{criteria.weight}}
+                        range: {{criteria.range}}
+                        </li>
+                    </ul>
+                </div>
+            </accordion>    
+        </td>
+        </tr>
+    </table>
 <table accordion class="table">
     <tr accordion-group heading="{{solution.title}}" ng-repeat="solution in argum.solutions">
         <td colspan="2">
