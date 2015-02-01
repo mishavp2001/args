@@ -1,20 +1,17 @@
 <div class="argum-edit-nav ">
-    <input ng-model="query" type="search" placeholder="search" class="topcoat-search-input search-key">
+    <input ng-model="query" type="text" placeholder="Search problems" class="topcoat-search-input search-key">
     <table class="table argumtable" ng-show="internal">
-        <tr>
-            <td><h4>Problems</h4></td>
-        </tr>
         <tr ng-repeat="arg in argums| filter:query | orderBy:'vote':false">
             <td ng-class="{probselected: arg._id==argum._id}"  class="problem-col" ng-mouseleave="details=false" ng-mouseover="details=true">
-                <a access-level="accessLevels.user" ui-sref="editArgum({id:arg._id})">{{arg.title}}</a> 
+                <a ng-hide="!loggedin" access-level="accessLevels.user" ui-sref="editArgum({id:arg._id})">{{arg.title}}</a> 
                 <a ng-hide="loggedin" ui-sref="viewArgum({id:arg._id})">{{arg.title}}</a> 
             </td>
         </tr>
     </table>
-    <a ui-sref="public.newArgum" class="btn btn-success">Add New Problem</a>
 </div>
 
 <a ng-click="internal=true" class="search-blob"  ng-hide="internal" href="">Open Internal Search</a>
+<a ng-show="internal" ui-sref="public.newArgum" class="search-blob btn btn-success">Add New Problem</a>
 
 <iframe id="my-frame" name="my-frame" ng-src="{{extUrl}}" ng-hide="internal"></iframe>
 
@@ -91,7 +88,7 @@
 </table>
 
 
-<div class="form-group">
+<div class="argum-table">
     <div class="col-sm-offset-2 col-sm-10">
         <input ng-click="addNewCriteria()" class="btn btn-default" value="Add New Criteria"/>
         <input ng-click="addNewSolution()" class="btn btn-primary" value="Add New Solution"/>
@@ -100,3 +97,21 @@
 </div>
 
 </form>
+
+
+<div ng-show="googleStuff.length" id="footer">
+<div class='g-search'>
+
+<ul>
+  <li ng-class="stuff.selected" class="g-serach-list"
+      ng-repeat="stuff in googleStuff">
+    <a href=""  ng-click="ifr(stuff)"
+       target="my-frame"><b>{{stuff.visibleUrl}}</b></a>
+ 
+    <div class="text-muted">{{stuff.titleNoFormatting}}</div>
+  </li>
+</ul>
+
+</div>
+
+</div>

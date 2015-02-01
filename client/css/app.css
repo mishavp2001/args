@@ -493,3 +493,7 @@ li.rate  a.del-rate {
 #car .carousel.fading .carousel-inner > .next, #car .carousel.fading .carousel-inner > .active.left {
     opacity: 0;
 }
+.sol-criteria{
+  float:left;
+  width:80%;
+}

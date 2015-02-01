@@ -299,6 +299,7 @@ angular.module('argums-app')
     $scope.argum=new Argum();
     $scope.argum.title = Data.getQuery();
     $scope.rating = $scope.argum.vote;
+    $scope.loggedin = Auth.isLoggedIn();
     $scope.user = Auth.user;
     $scope.argum.user = $scope.user.username;
     $scope.argum.date = new Date();
@@ -308,6 +309,8 @@ angular.module('argums-app')
     $scope.query = "";
     $scope.argum.criterias=[];
     $scope.argum.solutions=[];
+    
+    $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password});  
 
 
       $scope.ifr=function(stuf){
@@ -396,7 +399,7 @@ angular.module('argums-app')
             solution.cons.splice(index, 1);
         }
        
-        solution.score =  $scope.addRating(solution.pros) - $scope.addRating(solution.cons);
+        solution.score =  $scope.addRating(solution.criterias) + ($scope.addRating(solution.pros) - $scope.addRating(solution.cons));
         
     }
     
@@ -408,7 +411,9 @@ angular.module('argums-app')
     $scope.user = Auth.user;
     $scope.userRoles = Auth.userRoles;
     $scope.accessLevels = Auth.accessLevels;
-
+    $scope.status = {
+        isFirstOpen: true,
+    };
 
     $scope.loading = true;
     $scope.loggedin = Auth.isLoggedIn();
@@ -435,6 +440,30 @@ angular.module('argums-app')
         $scope.extUrl=$sce.trustAsResourceUrl(stuf.unescapedUrl);
     }
 
+    $scope.initRate=function(solution, weight, index){
+        if(solution.criterias[index]){
+            solution.criterias[index].rating = solution.criterias[index].rating|| 0;
+            solution.criterias[index].wrating = parseInt(solution.criterias[index].rating  * weight/10);
+        } else {
+            solution.criterias[index] = {rating: 0, wrating: 0};
+        }
+        solution.cscore = $scope.addwRating(criterias);
+
+        
+    }
+
+    $scope.initcScore=function(solution){
+        solution.cscore = $scope.addwRating(solution.criterias);
+    }
+
+    $scope.calcWeightedRate=function(solution, rating, weight, index){
+        solution.criterias[index].rating = rating;
+        solution.criterias[index].wrating = parseInt(rating * weight/10);
+        solution.score =  $scope.addwRating(solution.criterias) + ($scope.addRating(solution.pros) - $scope.addRating(solution.cons));
+        solution.cscore = $scope.addwRating(solution.criterias);
+    }
+
+  
     $scope.$watch('query', function(val) {
                 Data.setQuery(val);
                 var googleResults = function(query) {
@@ -457,6 +486,7 @@ angular.module('argums-app')
     });            
 
     $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password});  
+   
 
 
     $scope.deleteArgum=function(Argum){
@@ -495,7 +525,16 @@ angular.module('argums-app')
         return parseInt(sum);
 
     }
+    $scope.addwRating = function(arr){
+        var sum =0;
+        var i;
+        for(i=0; i <= arr.length-1; i++ ){
+            arr[i].rating = (parseInt(arr[i].wrating)!='NaN')?parseInt(arr[i].wrating):0;    
+            sum = sum + arr[i].wrating;
+        }
+        return parseInt(sum);
 
+    }
     $scope.addNewCriteria=function(){
         //alert("Here"); 
         if(typeof($scope.argum.criterias) == 'underfined'){

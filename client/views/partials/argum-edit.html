@@ -1,20 +1,18 @@
 <div class="argum-edit-nav ">
-    <input ng-model="query" type="search" placeholder="search" class="topcoat-search-input search-key">
+
+    <input ng-model="query" type="search" placeholder="Search problems" class="topcoat-search-input search-key">
     <table class="table argumtable" ng-show="internal">
-        <tr>
-            <td><h4>Problems</h4></td>
-        </tr>
         <tr ng-repeat="arg in argums| filter:query | orderBy:'vote':false">
             <td ng-class="{probselected: arg._id==argum._id}"  class="problem-col" ng-mouseleave="details=false" ng-mouseover="details=true">
-                <a access-level="accessLevels.user" ui-sref="editArgum({id:arg._id})">{{arg.title}}</a> 
+                <a ng-hide="!loggedin" access-level="accessLevels.user" ui-sref="editArgum({id:arg._id})">{{arg.title}}</a> 
                 <a ng-hide="loggedin" ui-sref="viewArgum({id:arg._id})">{{arg.title}}</a> 
             </td>
         </tr>
     </table>
-    <a ui-sref="public.newArgum" class="btn btn-success">Add New Problem</a>
 </div>
 
 <a ng-click="internal=true" class="search-blob"  ng-hide="internal" href="">Open Internal Search</a>
+<a ng-show="internal" ui-sref="public.newArgum" class="search-blob btn btn-success">Add New Problem</a>
 
 <iframe id="my-frame" name="my-frame" ng-src="{{extUrl}}" ng-hide="internal"></iframe>
 
@@ -44,8 +42,12 @@
         <td colspan="2">
             <input type="text" ng-model="argum.details" class="form-control" id="details" placeholder="Add Details"/> 
              <accordion> 
-                <div accordion-group heading="Criterias">   
-                    <div ng-repeat="criteria in argum.criterias" >   
+                <div accordion-group is-open="status.isFirstOpen" heading="Criterias">   
+                    <label class="col-sm-2 control-label">Title</label>
+                    <label class="col-sm-2 control-label">Range</label>
+                    <label class="col-sm-1 control-label">Weight</label>
+                    <br></br>    
+                    <div ng-repeat="criteria in argum.criterias|orderBy:'weight':true" >   
                         <input type="text" ng-model="criteria.title" class="input-group-sm" id="criterias" placeholder="Criteria"/>
                         <input type="text" ng-model="criteria.range" class="input-group-sm" id="range" placeholder="Range"/>
                         <input type="text" ng-model="criteria.weight" class="input-group-sm" id="weight" placeholder="Weight"/>
@@ -60,7 +62,7 @@
  <table accordion close-others="false" class="argum-table">
 
     <tr >
-        <td class="repeat-animation animated bounceInLeft" ng-class='{best:$first}' ng-repeat="solution in argum.solutions| orderBy:'score':true">
+        <td class="repeat-animation animated bounceInLeft" ng-init="solution.score = solution.score || 0" ng-class='{best:$first}' ng-repeat="solution in argum.solutions| orderBy:'score':true">
             <div accordion-group>  
             <div  accordion-heading >{{solution.title}} 
                  <span class="score">{{solution.score}} <a class="del-sol" href="" ng-click="delSol(argum.solutions, solution)" >x</a>   
@@ -73,12 +75,18 @@
             </p>
             <div>
                 <textarea class="txt-wide" ng-model="solution.details"  id="title" placeholder="Details"></textarea> 
-                <accordion> 
-                <div accordion-group heading="Criteria Values">   
-                    <div ng-repeat="criteria in argum.criterias" >   
-                        <input type="text" ng-model="solution.criterias[$index].value" class="input-group-sm" id="value" placeholder="{{criteria.title}} value"/>({{criteria.title}}/{{criteria.range}}/{{criteria.weight}})
-                    </div>
-                </div>
+                <accordion>
+                    <accordion-group  ng-init="initcScore(solution)"  is-open="status.isFirstOpen" heading="Criteria Values {{solution.cscore}}" >
+                        <div class="sol-criteria" ng-init="initRate(solution, criteria.weight, $index)" ng-repeat="criteria in argum.criterias|orderBy:'weight':true"" >   
+                             <label class="col-sm-8">{{criteria.title}}</label>
+                            <input type="text" ng-model="solution.criterias[$index].value" class="" id="value" placeholder="{{criteria.title}} value"/>
+                             <span class="star-rating" star-rating rating-value="{{solution.criterias[$index].rating}}" color="black" code="&#9878;" max="10" on-rating-selected="calcWeightedRate(solution,rating, criteria.weight, $index)"></span>
+                             <span style="float:right" class="score-sm">{{solution.criterias[$index].wrating}} 
+                            </span>
+                            <input type="hidden" ng-model="solution.criterias[$index].rating" class="form-control" id="cr{{$index}}" placeholder="Criterias"/> 
+                        </div>    
+                    </accordion-group>
+                </accordion>
             </div>
             <div class="comp float-left">
                 <ul>
@@ -110,11 +118,12 @@
 </table>
 
 
-<div class="form-group">
+<div class="argum-table">
     <div class="">
         <input ng-click="addNewSolution()" class="btn btn-primary" value="Add New Solution"/>
         <input ng-click="addNewCriteria()" class="btn btn-default" value="Add New Criteria"/>
         <input type="submit" class="btn btn-primary" value="Save"/>
+        <a access-level="accessLevels.user" class="btn btn-danger"  ng-click="deleteArgum(argum)">Delete</a>
     </div>
 </div>
 </form>
