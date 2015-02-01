@@ -441,6 +441,7 @@ angular.module('argums-app')
     }
 
     $scope.initRate=function(solution, weight, index){
+        //alert(solution.criterias[index].rating);
         if(solution.criterias[index]){
             solution.criterias[index].rating = solution.criterias[index].rating|| 0;
             solution.criterias[index].wrating = parseInt(solution.criterias[index].rating  * weight/10);
@@ -459,6 +460,8 @@ angular.module('argums-app')
     $scope.calcWeightedRate=function(solution, rating, weight, index){
         solution.criterias[index].rating = rating;
         solution.criterias[index].wrating = parseInt(rating * weight/10);
+        //alert(solution.criterias[index].rating + rating + wrating);
+       
         solution.score =  $scope.addwRating(solution.criterias) + ($scope.addRating(solution.pros) - $scope.addRating(solution.cons));
         solution.cscore = $scope.addwRating(solution.criterias);
     }
@@ -529,7 +532,7 @@ angular.module('argums-app')
         var sum =0;
         var i;
         for(i=0; i <= arr.length-1; i++ ){
-            arr[i].rating = (parseInt(arr[i].wrating)!='NaN')?parseInt(arr[i].wrating):0;    
+            arr[i].wrating = (parseInt(arr[i].wrating)!='NaN')?parseInt(arr[i].wrating):0;    
             sum = sum + arr[i].wrating;
         }
         return parseInt(sum);
