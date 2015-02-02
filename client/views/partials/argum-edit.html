@@ -88,7 +88,7 @@
                     </accordion-group>
                 </accordion>
             </div>
-            <div class="comp float-left">
+            <div class="comp float-left-half">
                 <ul>
                      <li class= "rate" ng-repeat="pro in solution.pros| orderBy:'rating':true"> 
                             <input type="text" ng-model="pro.title" class="form-control" id="title" placeholder="PRO"/> 
@@ -100,7 +100,7 @@
             </ul>
             <input ng-click="addNewPro(solution)" class="btn comp-header" value="Add PROS"/>
             </div>  
-            <div class="comp float-left">
+            <div class="comp float-left-half">
                 <ul>
                      <li class= "rate" ng-repeat="con in solution.cons| orderBy:'rating':true"> 
                             <input type="text" ng-model="con.title" class="form-control" id="title" placeholder="CON"/> 
