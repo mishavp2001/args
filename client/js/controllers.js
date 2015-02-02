@@ -291,6 +291,46 @@ angular.module('argums-app')
 
     $scope.argum=Argum.get({id:$stateParams.id});
     $scope.rating = $scope.argum.vote;
+
+    $scope.initRate=function(solution, weight, index){
+        //alert(solution.criterias[index].rating);
+        if(solution.criterias[index]){
+            solution.criterias[index].rating = solution.criterias[index].rating|| 0;
+            solution.criterias[index].wrating = parseInt(solution.criterias[index].rating  * weight/10);
+        } else {
+            solution.criterias[index] = {rating: 0, wrating: 0};
+        }
+        solution.cscore = $scope.addwRating(solution.criterias);
+
+        
+    }
+
+    $scope.initcScore=function(solution){
+        solution.cscore = $scope.addwRating(solution.criterias);
+    }
+
+    $scope.addwRating = function(arr){
+        var sum =0;
+        var i;
+        for(i=0; i <= arr.length-1; i++ ){
+            arr[i].wrating = (parseInt(arr[i].wrating)!='NaN')?parseInt(arr[i].wrating):0;    
+            sum = sum + arr[i].wrating;
+        }
+        return parseInt(sum);
+
+    }
+
+     $scope.calcWeightedRate=function(solution, rating, weight, index){
+        solution.criterias[index].rating = rating;
+        solution.criterias[index].wrating = parseInt(rating * weight/10);
+        //alert(solution.criterias[index].rating + rating + wrating);
+       
+        solution.score =  $scope.addwRating(solution.criterias) + ($scope.addRating(solution.pros) - $scope.addRating(solution.cons));
+        solution.cscore = $scope.addwRating(solution.criterias);
+    }
+
+
+  
     //updateStars();
     //alert($scope.rating);
 
@@ -448,7 +488,7 @@ angular.module('argums-app')
         } else {
             solution.criterias[index] = {rating: 0, wrating: 0};
         }
-        solution.cscore = $scope.addwRating(criterias);
+        solution.cscore = $scope.addwRating(solution.criterias);
 
         
     }

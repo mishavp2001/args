@@ -27,29 +27,51 @@
         </td>
         </tr>
     </table>
-<table accordion class="table">
-    <tr accordion-group heading="{{solution.title}}" ng-repeat="solution in argum.solutions">
-        <td colspan="2">
-            <h3>Solution {{$index +1}} - <span ng-model="solution.title">{{solution.title}}</span></h3>
-            <div>{{solution.details}}</div>
-            <div class="float-left">
-                <div class="comp-header">PROS</div>
+
+
+<table accordion close-others="false" class="argum-table">
+
+    <tr >
+        <td class="repeat-animation animated bounceInLeft" ng-init="solution.score = solution.score || 0" ng-class='{best:$first}' ng-repeat="solution in argum.solutions| orderBy:'score':true">
+            <div accordion-group>  
+            <div  accordion-heading >{{solution.title}} 
+                 <span class="score">{{solution.score}}   
+            </span>
+            </div>
+            <p>
+                <input type="text" ng-model="solution.title" class="" id="title" placeholder="title"/> 
+                
+                <input type="hidden" ng-model="solution.score" id="score"></input> 
+            </p>
+            <div>
+                <textarea class="txt-wide" ng-model="solution.details"  id="title" placeholder="Details"></textarea> 
+                <accordion>
+                    <accordion-group  ng-init="initcScore(solution)"  is-open="status.isFirstOpen" heading="Criteria Values. Weighted Score:  {{solution.cscore}}" >
+                        <div class="sol-criteria" ng-init="initRate(solution, criteria.weight, $index)" ng-repeat="criteria in argum.criterias|orderBy:'weight':true"" >   
+                             <label class="col-sm-12">{{criteria.title}} is {{solution.criterias[$index].value}}</label>
+                             <span class="col-sm-12 star-rating" star-rating rating-value="{{solution.criterias[$index].rating}}" color="black" code="&#9878;" max="10" on-rating-selected="calcWeightedRate(solution,rating, criteria.weight, $index)"></span>
+                            </span>
+                        </div>    
+                    </accordion-group>
+                </accordion>
+            </div>
+            <div class="comp float-left-half ">
                 <ul>
-                     <li ng-repeat="pro in solution.pros| orderBy:'rating':true"> 
-                            {{pro.title}} - {{pro.rating}}
-                            <span class="star-rating" star-rating rating-value="{{pro.rating}}" off="true" color="green" code="&#9878;" max="10" on-rating-selected="rateFunction(rating, pro, solution)"></span>
+                     <li class= "rate procons" ng-repeat="pro in solution.pros| orderBy:'rating':true"> 
+                            <span class="col-sm-12 title">{{pro.title}}</span>
+                            <span class="col-sm-12 star-rating" star-rating rating-value="{{pro.rating}}" color="green" code="&#9878;" max="10" on-rating-selected="rateFunction(rating, pro, solution)"></span>
                      </li>
             </ul>
             </div>  
-            <div class="float-right">
-                <div class="comp-header">CONS</div>
+            <div class="comp float-left-half">
                 <ul>
-                     <li ng-repeat="con in solution.cons| orderBy:'rating':true"> 
-                            {{con.title}} - {{con.rating}}
-                              <span class="star-rating" star-rating rating-value="{{pro.rating}}" off="true" color="red" code="&#9878;" max="10" on-rating-selected="rateFunction(rating, pro, solution)"></span>
+                     <li class= "rate procons" ng-repeat="con in solution.cons| orderBy:'rating':true"> 
+                            <span class="col-sm-12 title">{{con.title}}</span>
+                            <span class="col-sm-12 star-rating" star-rating rating-value="{{con.rating}}" max="10" color="red" code="&#9878;" on-rating-selected="rateFunction(rating, con, solution)"></span>
                      </li>
                 </ul> 
             </div>
+        </div>    
         </td>
     </tr>
 </table>

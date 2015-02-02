@@ -38,6 +38,19 @@
                <div accordion-group  >
                <div accordion-heading > {{solution.title}} <span class="score">{{solution.score}}</span></div>
                   <div>{{solution.details}}</div>
+                  <accordion>
+                    <accordion-group  ng-init="initcScore(solution)"  is-open="status.isFirstOpen" heading="Criteria Values {{solution.cscore}}" >
+                        <div class="sol-criteria" ng-init="initRate(solution, criteria.weight, $index)" ng-repeat="criteria in argum.criterias|orderBy:'weight':true"" >   
+                             <label class="col-sm-8">{{criteria.title}}</label>
+                            <input type="text" ng-model="solution.criterias[$index].value" class="" id="value" placeholder="{{criteria.title}} value"/>
+                             <span class="star-rating" star-rating rating-value="{{solution.criterias[$index].rating}}" color="black" code="&#9878;" max="10" on-rating-selected="calcWeightedRate(solution,rating, criteria.weight, $index)"></span>
+                             <span style="float:right" class="score-sm">{{solution.criterias[$index].wrating}} 
+                            </span>
+                            <input type="hidden" ng-model="solution.criterias[$index].rating" class="form-control" id="cr{{$index}}" placeholder="Criterias"/> 
+                        </div>    
+                    </accordion-group>
+                </accordion>
+                
                   <div class="float-left">
                       <ul class="argums-list">
                            <li ng-repeat="pro in solution.pros| orderBy:'rating':true"> 

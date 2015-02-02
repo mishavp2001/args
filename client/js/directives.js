@@ -74,6 +74,7 @@ angular.module('argums-app').directive('starRating', ['$location', function($loc
                      + '{{code}}'
                      + '</li>'
                      + '</ul>'
+                     + '<span>{{ratingValue}}</span>' 
                      + '<style>ul.{{color}} li.filled { color:{{color}}}</style>',
             scope : {
                 ratingValue : '@ratingValue',
