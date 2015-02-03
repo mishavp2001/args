@@ -90,6 +90,14 @@
             <div>
                 <textarea class="txt-wide" ng-model="solution.details"  id="title" placeholder="Details"></textarea> 
                 <accordion>
+                    <accordion-group  ng-init=""  is-open="status.isFirstOpen" heading="URLS" >
+                        <div class="sol-criteria" ng-init="" ng-repeat="url in argum.urls"" >   
+                            <input type="text" ng-model="url.url" class="" id="value" placeholder="Add URL"/>
+                        </div>
+                    </accordion-group>
+                </accordion>
+
+                <accordion>
                     <accordion-group  ng-init="initcScore(solution)"  is-open="status.isFirstOpen" heading="Criteria Values {{solution.cscore}}" >
                         <div class="sol-criteria" ng-init="initRate(solution, criteria.weight, $index)" ng-repeat="criteria in argum.criterias|orderBy:'weight':true"" >   
                              <label class="col-sm-8">{{criteria.title}}</label>

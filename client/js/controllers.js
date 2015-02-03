@@ -31,7 +31,9 @@ angular.module('argums-app')
         if(!$scope.loggedin) {
             $location.path("login");
         } 
-        $scope.share = false;
+        $scope.all = false;
+    } else {
+        $scope.all = true
     }
 
     $scope.userRoles = Auth.userRoles;
@@ -49,7 +51,7 @@ angular.module('argums-app')
     
     $scope.loadargums = function(cat){
         $scope.curcat.selected = "";
-        $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password,  'category': cat, 'share':$scope.share});
+        $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password,  'category': cat, 'all':$scope.all});
         $scope.argums.category = cat;  
     }
 
@@ -69,7 +71,7 @@ angular.module('argums-app')
         }
         return count;
     }
-    $scope.allargums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password, 'share':$scope.share }); 
+    $scope.allargums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password, 'all':$scope.all }); 
     $scope.argums=$scope.allargums;  
 
       //var deferred = $q.defer();
@@ -98,7 +100,7 @@ angular.module('argums-app')
 
     $scope.selectcat=function(cat){
         cat.selected = "catselected";
-        $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password,  'category': cat.title,  'share':$scope.share });
+        $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password,  'category': cat.title,  'all':$scope.all });
         $scope.curcat.selected = "";
         $scope.curcat =  cat;
         $scope.argums.category = cat.title;
@@ -171,102 +173,6 @@ angular.module('argums-app')
         }       
                
     });        
-
-}]);
-
-angular.module('argums-app')
-.controller('ArgumCtrl',
-    ['$rootScope', '$scope', '$location', '$window', 'popupService', 'Auth', 'Argum', 'googleFactory', '$sce', 'Data',
-     function($rootScope, $scope, $location, $window, popupService, Auth, Argum, googleFactory, $sce, Data){
-//alert("Hererere ");
-    $scope.loading = true;
-    $scope.loggedin = Auth.isLoggedIn();
-
-    if (!$scope.loggedin) {
-        $location.path("login");
-    }
-
-    $scope.userRoles = Auth.userRoles;
-    $scope.accessLevels = Auth.accessLevels;
-    $scope.user = Auth.user;
-    $scope.query = "";
-    $scope.catquery = "";
-    
-    $scope.internal = true;
-    $scope.extUrl = "";
-    $scope.curstuf ="";
-
-
-    $scope.ifr=function(stuf){
-        $scope.internal = false;
-        stuf.selected = "g-serach-selected";
-        $scope.curstuf.selected = "";
-        $scope.curstuf =  stuf;
-
-        //alert(url);
-        $scope.extUrl=$sce.trustAsResourceUrl(stuf.unescapedUrl);
-    }
-
-    $scope.$watch('query', function(val) {
-                Data.setQuery(val);
-                var googleResults = function(query) {
-                    $scope.googleStuff = {};
-                    googleFactory.getSearchResults(query)
-                      .then(function (response) {
-                        $scope.googleStuff = response.data.responseData.results;
-                      }, function (error) {
-                        console.error(error);
-                      });
-
-                };
-                $scope.internal = true;
-                if (val != "") {
-                    googleResults(val);
-                    stLight.options({publisher: "5ef2a14c-fbbc-45a1-96eb-8b6c89f9e010", doNotHash: false, doNotCopy: false, hashAddressBar: false});
-
-                }       
-               
-    });            
-
-    $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password});  
-    /*$scope.argums=Argum.getAll(  
-                {username: $scope.username,
-                password: $scope.password} );
-    */
-    //{name: $scope.username, password:$scope.password }
-    //alert($scope.argums);
-    $scope.moto="Welcome to our site!";
-
-    $scope.deleteArgum=function(Argum){
-        if(!$scope.loggedin | Argum.user != $scope.user.username){
-            alert("You don't have access");
-            return;
-        }   
-        if(popupService.showPopup('Really delete this?')){
-            Argum.$delete(function(){
-                $window.location.href='';
-            });
-        }
-    }
-    $scope.rememberme = true;
-    $scope.login = function() {
-        Auth.login({
-                username: $scope.username,
-                password: $scope.password,
-                rememberme: $scope.rememberme
-            },
-            function(res) {
-                $location.path('/');
-            },
-            function(err) {
-                $rootScope.error = "Failed to login";
-            });
-    };
-
-
-    $scope.loginOauth = function(provider) {
-        $window.location.href = '/auth/' + provider;
-    };
 
 }]);
 
@@ -466,9 +372,14 @@ angular.module('argums-app')
     $scope.loading = true;
     $scope.loggedin = Auth.isLoggedIn();
 
-    if (!$scope.loggedin) {
-        $location.path("login");
+    if ($location.path() == "/newargum/"){
+        $scope.new = true;
+    } else {
+        if (!$scope.loggedin) {
+            $location.path("login");
+        }
     }
+    
 
     $scope.query = "";
     $scope.catquery = "";
@@ -490,14 +401,17 @@ angular.module('argums-app')
 
     $scope.initRate=function(solution, weight, index){
         //alert(solution.criterias[index].rating);
-        if(solution.criterias[index]){
-            solution.criterias[index].rating = solution.criterias[index].rating|| 0;
-            solution.criterias[index].wrating = parseInt(solution.criterias[index].rating  * weight/10);
-        } else {
-            solution.criterias[index] = {rating: 0, wrating: 0};
+        if (!solution.criterias) {solution.cscore = 0;}
+        else {
+            if(solution.criterias[index]){
+                solution.criterias[index].rating = solution.criterias[index].rating|| 0;
+                solution.criterias[index].wrating = parseInt(solution.criterias[index].rating  * weight/10);
+            } else {
+                solution.criterias[index] = {rating: 0, wrating: 0};
+            }
+            solution.cscore = $scope.addwRating(solution.criterias);
         }
-        solution.cscore = $scope.addwRating(solution.criterias);
-
+        
         
     }
 
@@ -567,6 +481,7 @@ angular.module('argums-app')
     };
 
     $scope.addRating = function(arr){
+        if (!arr) { return 0;}
         var sum =0;
         var i;
         for(i=0; i <= arr.length-1; i++ ){
@@ -577,6 +492,7 @@ angular.module('argums-app')
 
     }
     $scope.addwRating = function(arr){
+        if (!arr) {return 0;}
         var sum =0;
         var i;
         for(i=0; i <= arr.length-1; i++ ){
@@ -650,6 +566,10 @@ angular.module('argums-app')
             $scope.argum.$save(function(){
                 $state.go('argums', {}, {reload: true});
             });
+        } if ($scope.new) {
+            $scope.argum.$save(function(){
+                $state.go('argums', {}, {reload: true});
+            });  
         } else {
             $scope.argum.$update(function(){
                 $state.go($state.current, {}, {reload: true});
@@ -658,8 +578,19 @@ angular.module('argums-app')
     };
 
     $scope.loadArgum=function(){
-        $scope.argum=Argum.get({id:$stateParams.id});
-        $scope.rating = $scope.argum.vote;
+        if ($location.path() == "/newargum/"){
+            $scope.argum=new Argum();
+            $scope.argum.criterias = [];
+            $scope.argum.solutions = [];
+            
+            $scope.argum.title = Data.getQuery();
+            $scope.rating = $scope.argum.vote;
+        } else {
+            $scope.argum=Argum.get({id:$stateParams.id});
+            $scope.rating = $scope.argum.vote;
+        }
+        
+
     };
 
     $scope.loadArgum();
@@ -673,7 +604,7 @@ angular.module('argums-app')
             $scope.selectedItem = $scope.argum.category;
         },
         function(error) {
-                 // $log.error('failure loading movie', errorPayload);
+                 log.error('failure loading movie', errorPayload);
         }
     );
 

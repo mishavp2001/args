@@ -27,20 +27,27 @@ var routes = [
         path: '/api/argums',
         httpMethod: 'GET',
         middleware: [(function(req,res){
-            console.log('Req' + req.query.username);
-            var share = req.query.share||true;
-            if(!req.query.category) {
-                Argum.find({"$or" :[{'share':share}, {'user':req.query.username}] },  function(err,argums){
+            var cat = req.query.category||'';
+            var all = req.query.all;
+            var retcall = function(err,argums){
                 if(err)
                     res.send(err);
                     res.json(argums);
-                });
+                };
+
+            if(all == 'true') {
+                //console.log('Req' + req.query.username + all);
+                if(cat == ''){
+                    Argum.find({"$or" :[{'share':true}, {'user':req.query.username}] },  retcall);
+                } else {
+                    Argum.find({"$or" :[{'share':true}, {'user':req.query.username}] , 'category': cat },  retcall);
+                }
+                
+            } else if (cat != '')  {
+                //console.log('Req' + req.query);
+                Argum.find({'user':req.query.username, 'category': cat },  retcall);
             } else {
-                Argum.find({"$or" :[{'share':share}, {'user':req.query.username}] , 'category':req.query.category },  function(err,argums){
-                if(err)
-                    res.send(err);
-                    res.json(argums);
-                });
+                Argum.find({'user':req.query.username},  retcall);
             }
               
         })]

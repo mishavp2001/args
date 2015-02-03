@@ -52,7 +52,7 @@ angular.module('argums-app', ['ngCookies', 'ui.router', 'ngResource', 'ui.bootst
         .state('public.newArgum', {
             url: '/newargum/',
             templateUrl: 'newargum',
-            controller: 'ArgumCreateController'
+            controller: 'ArgumEditController'
         })
 
         .state('public.404', {
@@ -115,7 +115,7 @@ angular.module('argums-app', ['ngCookies', 'ui.router', 'ngResource', 'ui.bootst
         })
         .state('editArgum', {
             url: '/argums/:id/edit',
-            templateUrl: 'partials/argum-edit.html',
+            templateUrl: 'argumedit',
             controller: 'ArgumEditController',
             data: {
                 access: access.user
