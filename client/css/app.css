@@ -512,6 +512,9 @@ li.rate  a.del-rate {
     padding-top: 2px;
     width: 100%;
 }
+.edit-sol .sol-criteria {
+  color: black;
+}
 .procons  span.title{
     height: 40px;
     overflow:hidden;

@@ -69,7 +69,7 @@
  <table accordion close-others="false" class="argum-table">
 
     <tr >
-        <td class="repeat-animation animated bounceInLeft" ng-init="solution.score = solution.score || 0" ng-class='{best:$first}' ng-repeat="solution in argum.solutions| orderBy:'score':true">
+        <td class="edit-sol repeat-animation animated bounceInLeft" ng-init="solution.score = solution.score || 0" ng-class='{best:$first}' ng-repeat="solution in argum.solutions| orderBy:'score':true">
             <div accordion-group>  
             <div  accordion-heading >{{solution.title}} 
                  <span class="score">{{solution.score}} <a class="del-sol" href="" ng-click="delSol(argum.solutions, solution)" >x</a>  
