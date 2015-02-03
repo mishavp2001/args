@@ -17,7 +17,7 @@ form.form-horizontal(ng-submit="login()", name="loginForm", role="form")
                     | Remember me
     .form-group
         .col-sm-offset-2.col-sm-10
-            button.btn.btn-default(type="submit", data-ng-disabled="loginForm.$invalid") Log in
+            button.btn.btn-default(type="submit", ng-disabled="loginForm.$invalid") Log in
 hr
 p ... or use one of them fancy social logins:
 .btn-group
