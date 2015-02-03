@@ -24,9 +24,16 @@ angular.module('argums-app')
     ['$rootScope', '$scope', '$location', '$window', 'popupService', 'Auth', 'Argum', 'Categories',  '$sce', 'Data', 'googleFactory',  '$q',
      function($rootScope, $scope, $location, $window, popupService, Auth, Argum, Categories,  $sce, Data, googleFactory, $q){
     
-  
     $scope.loading = true;
     $scope.loggedin = Auth.isLoggedIn();
+    //alert($location.path);
+    if ($location.path() == "/argums/"){
+        if(!$scope.loggedin) {
+            $location.path("login");
+        } 
+        $scope.share = false;
+    }
+
     $scope.userRoles = Auth.userRoles;
     $scope.accessLevels = Auth.accessLevels;
     $scope.user = Auth.user;
@@ -38,10 +45,11 @@ angular.module('argums-app')
     $scope.curcat ="";
     $scope.myInterval = 5000;
     $scope.hideme = false;
-   
+    $scope.sortby = 'vote';
+    
     $scope.loadargums = function(cat){
         $scope.curcat.selected = "";
-        $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password,  'category': cat});
+        $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password,  'category': cat, 'share':$scope.share});
         $scope.argums.category = cat;  
     }
 
@@ -61,7 +69,7 @@ angular.module('argums-app')
         }
         return count;
     }
-    $scope.allargums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password}); 
+    $scope.allargums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password, 'share':$scope.share }); 
     $scope.argums=$scope.allargums;  
 
       //var deferred = $q.defer();
@@ -90,7 +98,7 @@ angular.module('argums-app')
 
     $scope.selectcat=function(cat){
         cat.selected = "catselected";
-        $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password,  'category': cat.title});
+        $scope.argums=Argum.query({'username':$scope.user.username, 'password':$scope.user.password,  'category': cat.title,  'share':$scope.share });
         $scope.curcat.selected = "";
         $scope.curcat =  cat;
         $scope.argums.category = cat.title;

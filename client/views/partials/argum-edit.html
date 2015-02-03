@@ -27,8 +27,14 @@
              <span>Created by </span>{{ user.username }} on {{argum.date}}.</span> 
             <p>
                 Share:<input type="checkbox" ng-checked="argum.share" ng-model="argum.share" class="" id="share" />
-            </p>
-           <p>
+                <a id="agree-btn" class="btn btn-success" >
+                <span ng-init="argum.agree=argum.agree||0" class="col-sm-1" star-rating rating-value="{{argum.agree}}"  show="true" color="black" code="&#128077;" max="1" on-rating-selected="argum.agree=argum.agree+1"></span>
+              </a>
+              <a id="disagree-btn" class="btn btn-danger" >
+                <span ng-init="argum.disagree=argum.disagree||0" class="col-sm-1" star-rating rating-value="{{argum.disagree}}" show="true" color="black" code="&#128078;" max="1" on-rating-selected="argum.disagree= argum.disagree + 1"></span>
+                </span> 
+              </a>
+           </p>
             <select ng-model="argum.category"
                 ng-options="opt.title as opt.title for opt in options">
             </select>
@@ -52,6 +58,7 @@
                         <input type="text" ng-model="criteria.range" class="input-group-sm" id="range" placeholder="Range"/>
                         <input type="text" ng-model="criteria.weight" class="input-group-sm" id="weight" placeholder="Weight"/>
                     </div>
+                     <input ng-click="addNewCriteria()" class="btn btn-default" value="Add New Criteria"/> 
                 </div>
             </accordion>        
         </td>
@@ -65,7 +72,14 @@
         <td class="repeat-animation animated bounceInLeft" ng-init="solution.score = solution.score || 0" ng-class='{best:$first}' ng-repeat="solution in argum.solutions| orderBy:'score':true">
             <div accordion-group>  
             <div  accordion-heading >{{solution.title}} 
-                 <span class="score">{{solution.score}} <a class="del-sol" href="" ng-click="delSol(argum.solutions, solution)" >x</a>   
+                 <span class="score">{{solution.score}} <a class="del-sol" href="" ng-click="delSol(argum.solutions, solution)" >x</a>  
+                   <a id="agree-btn" class="btn btn-success" >
+                <span ng-init="solution.agree=solution.agree||0" class="col-sm-1" star-rating rating-value="{{solution.agree}}" color="black" code="&#128077;" max="1" on-rating-selected="solution.agree=solution.agree+1"></span>
+              </a>
+              <a id="disagree-btn" class="btn btn-danger" >
+                <span ng-init="solution.disagree=solution.disagree||0" class="col-sm-1" star-rating rating-value="{{solution.disagree}}" color="black" code="&#128078;" max="1" on-rating-selected="solution.disagree= solution.disagree + 1"></span>
+                </span> 
+              </a> 
             </span>
             </div>
             <p>
@@ -83,8 +97,8 @@
                              <span class="star-rating" star-rating rating-value="{{solution.criterias[$index].rating}}" color="black" code="&#9878;" max="10" on-rating-selected="calcWeightedRate(solution,rating, criteria.weight, $index)"></span>
                              <span style="float:right" class="score-sm">{{solution.criterias[$index].wrating}} 
                             </span>
-                            <input type="hidden" ng-model="solution.criterias[$index].rating" class="form-control" id="cr{{$index}}" placeholder="Criterias"/> 
-                        </div>    
+                            <input type="hidden" ng-model="solution.criterias[$index].rating" class="form-control" id="cr{{$index}}" placeholder="Criterias"/>
+                        </div>
                     </accordion-group>
                 </accordion>
             </div>
@@ -92,8 +106,7 @@
                 <ul>
                      <li class= "rate" ng-repeat="pro in solution.pros| orderBy:'rating':true"> 
                             <input type="text" ng-model="pro.title" class="form-control" id="title" placeholder="PRO"/> 
-                            <span class="star-rating" star-rating rating-value="{{pro.rating}}" color="green" code="&#9878;" max="10" on-rating-selected="rateFunction(rating, pro, solution)"></span><span class="score-sm">{{pro.rating}} 
-                            </span>
+                            <span class="star-rating" star-rating rating-value="{{pro.rating}}" color="green" code="&#9878;" max="10" on-rating-selected="rateFunction(rating, pro, solution)"></span>
                             <a class="del-rate" href="" ng-click="delProCon(solution, 'pros', $index)" >x</a> 
                             <input type="hidden" ng-model="pro.rating" class="form-control" id="pro{{$index}}" placeholder="Details"/> 
                      </li>
@@ -104,8 +117,7 @@
                 <ul>
                      <li class= "rate" ng-repeat="con in solution.cons| orderBy:'rating':true"> 
                             <input type="text" ng-model="con.title" class="form-control" id="title" placeholder="CON"/> 
-                            <span class="star-rating" star-rating rating-value="{{con.rating}}" max="10" color="red" code="&#9878;" on-rating-selected="rateFunction(rating, con, solution)"></span><span class="score-sm">{{con.rating}}  
-                            </span>
+                            <span class="star-rating" star-rating rating-value="{{con.rating}}" max="10" color="red" code="&#9878;" on-rating-selected="rateFunction(rating, con, solution)"></span>
                             <a class="del-rate" href="" ng-click="delProCon(solution, 'cons', $index)" >x</a>
                             <input type="hidden" ng-model="con.rating" class="form-control" id="cons{{$index}}" placeholder="Details"/> 
                      </li>
@@ -121,7 +133,6 @@
 <div class="argum-table">
     <div class="">
         <input ng-click="addNewSolution()" class="btn btn-primary" value="Add New Solution"/>
-        <input ng-click="addNewCriteria()" class="btn btn-default" value="Add New Criteria"/>
         <input type="submit" class="btn btn-primary" value="Save"/>
         <a access-level="accessLevels.user" class="btn btn-danger"  ng-click="deleteArgum(argum)">Delete</a>
     </div>

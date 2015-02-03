@@ -7,6 +7,13 @@
            <p>
                 Share:<input type="checkbox" ng-checked="argum.share" ng-model="argum.share" class="" id="share" />
             </p>
+            <a id="agree-btn" class="btn btn-success" >
+            <span ng-init="argum.agree=argum.agree||0" class="col-sm-1" star-rating rating-value="{{argum.agree}}" color="black" show="true" code="&#128077;" max="1" on-rating-selected="argum.agree=argum.agree+1; agreeArgum({id:argum._id})"></span>
+          </a>
+          <a id="disagree-btn" class="btn btn-danger" >
+            <span ng-init="argum.disagree=argum.disagree||0" class="col-sm-1" star-rating rating-value="{{argum.disagree}}" show="true" color="black" code="&#128078;" max="1" on-rating-selected="argum.disagree= argum.disagree + 1;  disagreeArgum({id:argum._id})"></span>
+            </span> 
+          </a>
 
         </td>
         <td></td>
@@ -71,11 +78,11 @@
                      </li>
                 </ul> 
             </div>
-        </div>    
+        </div> 
         </td>
     </tr>
 </table>
 
-<div>
+<div class="float-left-half top-buffer">
     <a data-access-level="accessLevels.user" class="btn btn-primary" ui-sref="editArgum({id:argum._id})">Edit</a>
 </div>

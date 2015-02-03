@@ -87,8 +87,8 @@ angular.module('argums-app', ['ngCookies', 'ui.router', 'ngResource', 'ui.bootst
         })
         .state('argums', {
             url: '/argums/',
-            templateUrl: 'partials/argums.html',
-            controller: 'ArgumCtrl',
+            controller:'CategoriesCtrl',
+            templateUrl: 'categories',
             data: {
                 access: access.anon
             }

@@ -12,11 +12,11 @@
   <table class="table argumcattable" ng-show="internal">
   <tr>
       <td><h4>Problems</h4></td>
-      <td><h4>Votes</h4></td>
+      <td><h4><a href="" ng-click="sortby=(sortby=='user'?'vote':'user')">Published by</a></h4></td>
        <td><h4>Best Solutions</h4></td>
        <td><h4></h4></td>
   </tr>
-  <tr ng-repeat="argum in argums| filter:query | orderBy:'vote':false">
+  <tr ng-repeat="argum in argums| filter:query | orderBy:sortby:true">
       <td class="problem-col" ng-mouseleave="details=false" ng-mouseover="details=true">
           <a access-level="accessLevels.user" ui-sref="editArgum({id:argum._id})">{{argum.title}}</a> 
           <a ng-hide="loggedin" ui-sref="viewArgum({id:argum._id})">{{argum.title}}</a> 
@@ -26,27 +26,29 @@
                   &#133;
               </span>
               <span class="fill"></span>   
-          </p>    
+          </p> 
+          <span ng-model="argum.vote" class="star-rating" star-rating rating-value="{{argum.vote}}" max="10" off="true" on-rating-selected="rateFunction(rating)"></span>
       </td>
       <td class="star-col">
-          <span ng-model="argum.vote" class="star-rating" star-rating rating-value="{{argum.vote}}" max="10" off="true" on-rating-selected="rateFunction(rating)"></span>
-        
+          {{argum.user}}
       </td>
       <td class="argums-col">
           <span accordion close-others="false" ng-hide="!argum.solutions[0].title">
               <div ng-class='{best:$first}' ng-repeat="solution in argum.solutions|orderBy:'score':true| limitTo:2">
                <div accordion-group  >
-               <div accordion-heading > {{solution.title}} <span class="score">{{solution.score}}</span></div>
+               <div accordion-heading > {{solution.title}} 
+                    <span class="score">{{solution.score}}
+                    </span>
+                    
+                </div>
                   <div>{{solution.details}}</div>
                   <accordion>
                     <accordion-group  ng-init="initcScore(solution)"  is-open="status.isFirstOpen" heading="Criteria Values {{solution.cscore}}" >
                         <div class="sol-criteria" ng-init="initRate(solution, criteria.weight, $index)" ng-repeat="criteria in argum.criterias|orderBy:'weight':true"" >   
                              <label class="col-sm-8">{{criteria.title}}</label>
-                            <input type="text" ng-model="solution.criterias[$index].value" class="" id="value" placeholder="{{criteria.title}} value"/>
-                             <span class="star-rating" star-rating rating-value="{{solution.criterias[$index].rating}}" color="black" code="&#9878;" max="10" on-rating-selected="calcWeightedRate(solution,rating, criteria.weight, $index)"></span>
-                             <span style="float:right" class="score-sm">{{solution.criterias[$index].wrating}} 
-                            </span>
-                            <input type="hidden" ng-model="solution.criterias[$index].rating" class="form-control" id="cr{{$index}}" placeholder="Criterias"/> 
+                              <label class="col-sm-12">{{criteria.title}} is {{solution.criterias[$index].value}}</label>
+                             <span class="col-sm-12 star-rating" star-rating rating-value="{{solution.criterias[$index].rating}}" color="black" code="&#9878;" max="10" on-rating-selected="calcWeightedRate(solution,rating, criteria.weight, $index)"></span>
+                            </span> 
                         </div>    
                     </accordion-group>
                 </accordion>
@@ -55,7 +57,7 @@
                       <ul class="argums-list">
                            <li ng-repeat="pro in solution.pros| orderBy:'rating':true"> 
                                   <p>{{pro.title}}</p>
-                                  <span class="star-rating" star-rating rating-value="{{pro.rating}}" off="true" color="green" code="&#9878;" max="10" ></span> {{pro.rating}}
+                                  <span class="star-rating" star-rating rating-value="{{pro.rating}}" off="true" color="green" code="&#9878;" max="10" ></span>
                                   <div class="bottom" />
                            </li>
                       </ul>
@@ -64,7 +66,7 @@
                       <ul class="argums-list">
                            <li ng-repeat="con in solution.cons| orderBy:'rating':true"> 
                                   <p>{{con.title}}</p> 
-                                    <span class="star-rating" star-rating rating-value="{{con.rating}}" off="true" color="red" code="&#9878;" max="10" ></span>{{con.rating}}
+                                    <span class="star-rating" star-rating rating-value="{{con.rating}}" off="true" color="red" code="&#9878;" max="10" ></span>
                                     <div class="bottom" />
                            </li>
                       </ul> 
@@ -82,11 +84,18 @@
           <a class="btn btn-primary" ui-sref="viewArgum({id:argum._id})">View</a>
           <a  class="btn btn-primary" ui-sref="editArgum({id:argum._id})">Edit</a>
           <a access-level="accessLevels.user" class="btn btn-danger"  ng-click="deleteArgum(argum)">Delete</a>
+          <br></br>
+
+          <a id="agree-btn" class="btn btn-success" >
+            <span ng-init="argum.agree=argum.agree||0" class="col-sm-1" star-rating rating-value="{{argum.agree}}" show="true" color="black" code="&#128077;" max="1" on-rating-selected="argum.agree=argum.agree+1; agreeArgum({id:argum._id})"></span>
+          </a>
+          <a id="disagree-btn" class="btn btn-danger" >
+            <span ng-init="argum.disagree=argum.disagree||0" class="col-sm-1" star-rating rating-value="{{argum.disagree}}" show="true" color="black" code="&#128078;" max="1" on-rating-selected="argum.disagree= argum.disagree + 1; disagreeArgum({id:argum._id})"></span>
+            </span> 
+          </a>
+
       </td>
   </tr>
-  <tr><td colspan="3">
-
-  </td></tr>
   </table>
 </div>  
 

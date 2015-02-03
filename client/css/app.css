@@ -108,7 +108,7 @@ body > #wrap {height: auto; min-height: 100%;}
 .movietable tr td.argums-col {
     width: 30%;
 } 
-.Argumtable tr:nth-child(1) td{
+.argumtable tr:nth-child(1) td{
     border-top: none;
 }
 a.nodecoration{
@@ -248,9 +248,7 @@ td.text-left {
   margin-top: 5px;
 }
 
-.btn-success {
-  margin-left: 10px;
- } 
+ 
  .table.movietable {
     width: 80%;
     float: left;
@@ -509,7 +507,7 @@ li.rate  a.del-rate {
     float: left;
     margin-top: 5px;
     padding-bottom: 2px;
-    padding-left: 2px;
+    padding-left: 15px;
     padding-right: 2px;
     padding-top: 2px;
     width: 100%;
@@ -535,4 +533,8 @@ li.rate  a.del-rate {
     padding-left: 2px;
     padding-right: 2px;
     padding-top: 2px;
+}
+
+#agree-btn, #disagree-btn {
+  padding: 0px;
 }

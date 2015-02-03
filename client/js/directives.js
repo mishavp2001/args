@@ -69,17 +69,18 @@ angular.module('argums-app').directive('activeNav', ['$location', function($loca
 angular.module('argums-app').directive('starRating', ['$location', function($location) {
     return {
             restrict : 'A',
-            template : '<ul class="rating {{color}}" >'
+            template : '<ul ng-init="showValue=show" ng-mouseleave="showValue=show||false" ng-mouseover="showValue=show||true"  class="rating {{color}}" >'
                      + '    <li ng-repeat="star in stars" ng-class="star"  ng-click="toggle($index)">'
                      + '{{code}}'
                      + '</li>'
                      + '</ul>'
-                     + '<span>{{ratingValue}}</span>' 
+                     + '<span ng-show="showValue">{{ratingValue}}</span>' 
                      + '<style>ul.{{color}} li.filled { color:{{color}}}</style>',
             scope : {
                 ratingValue : '@ratingValue',
                 code: '@code',
                 color: '@color',
+                show: '@show',
                 max : '=',
                 off : '=',
                 onRatingSelected : '&'

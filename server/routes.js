@@ -28,14 +28,15 @@ var routes = [
         httpMethod: 'GET',
         middleware: [(function(req,res){
             console.log('Req' + req.query.username);
+            var share = req.query.share||true;
             if(!req.query.category) {
-                Argum.find({"$or" :[{'share':true}, {'user':req.query.username}] },  function(err,argums){
+                Argum.find({"$or" :[{'share':share}, {'user':req.query.username}] },  function(err,argums){
                 if(err)
                     res.send(err);
                     res.json(argums);
                 });
             } else {
-                Argum.find({"$or" :[{'share':true}, {'user':req.query.username}] , 'category':req.query.category },  function(err,argums){
+                Argum.find({"$or" :[{'share':share}, {'user':req.query.username}] , 'category':req.query.category },  function(err,argums){
                 if(err)
                     res.send(err);
                     res.json(argums);
