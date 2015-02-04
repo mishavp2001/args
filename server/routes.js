@@ -98,7 +98,7 @@ var routes = [
                 if (err)
                     res.send(err);
 
-                res.json({ message: 'Argum updated!' });
+                res.json(argums);
             });
 
            });

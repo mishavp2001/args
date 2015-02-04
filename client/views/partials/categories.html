@@ -87,10 +87,10 @@
           <br></br>
 
           <a id="agree-btn" class="btn btn-success" >
-            <span ng-init="argum.agree=argum.agree||0" class="col-sm-1" star-rating rating-value="{{argum.agree}}" show="true" color="black" code="&#128077;" max="1" on-rating-selected="argum.agree=argum.agree+1; agreeArgum({id:argum._id})"></span>
+            <span ng-init="argum.agree=argum.agree||0; selected=argum.agreeusers.indexOf(user.username)!=-1;" class="col-sm-1" star-rating rating-value="{{argum.agree}}" show="true" color="black" code="&#128077;" max="1" loggedin="loggedin" selected="selected" users="{{argum.agreeusers.join(',')}}"  on-rating-selected="voteArgum(argum, 'a')"></span>
           </a>
           <a id="disagree-btn" class="btn btn-danger" >
-            <span ng-init="argum.disagree=argum.disagree||0" class="col-sm-1" star-rating rating-value="{{argum.disagree}}" show="true" color="black" code="&#128078;" max="1" on-rating-selected="argum.disagree= argum.disagree + 1; disagreeArgum({id:argum._id})"></span>
+            <span ng-init="argum.disagree=argum.disagree||0;selected=argum.disagreeusers.indexOf(user.username)!=-1;"  users="{{argum.disagreeusers.join(',')}}" class="col-sm-1" star-rating rating-value="{{argum.disagree}}" show="true" color="black" code="&#128078;" max="1" selected="selected" loggedin="loggedin" on-rating-selected="voteArgum(argum, 'd')"></span>
             </span> 
           </a>
 

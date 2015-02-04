@@ -21,8 +21,8 @@ angular.module('argums-app')
 
 angular.module('argums-app')
 .controller('CategoriesCtrl', 
-    ['$rootScope', '$scope', '$location', '$window', 'popupService', 'Auth', 'Argum', 'Categories',  '$sce', 'Data', 'googleFactory',  '$q',
-     function($rootScope, $scope, $location, $window, popupService, Auth, Argum, Categories,  $sce, Data, googleFactory, $q){
+    ['$rootScope', '$scope', '$location', '$window', 'popupService', 'Auth', 'Argum', 'Categories',  '$sce', 'Data', 'googleFactory',  '$q', '$state',
+     function($rootScope, $scope, $location, $window, popupService, Auth, Argum, Categories,  $sce, Data, googleFactory, $q, $state){
     
     $scope.loading = true;
     $scope.loggedin = Auth.isLoggedIn();
@@ -48,6 +48,7 @@ angular.module('argums-app')
     $scope.myInterval = 5000;
     $scope.hideme = false;
     $scope.sortby = 'vote';
+    $scope.argum = {};
     
     $scope.loadargums = function(cat){
         $scope.curcat.selected = "";
@@ -55,6 +56,38 @@ angular.module('argums-app')
         $scope.argums.category = cat;  
     }
 
+
+    $scope.voteArgum = function(argum, type){
+        if(!$scope.loggedin) {
+            $rootScope.error = "Please login to vote";
+        } else {
+            var agreeIndex = argum.agreeusers.indexOf($scope.user.username);
+            var disagreeIndex = argum.disagreeusers.indexOf($scope.user.username);
+
+            if ( (type == 'a' &&  agreeIndex != -1) || (type == 'd' && disagreeIndex!= -1)){
+                $rootScope.error = "You already voted";
+            } else {
+                if(type == 'a') {
+                    argum.agreeusers.push($scope.user.username);
+                    argum.agree=argum.agree+1;
+                    if(disagreeIndex !=-1){
+                      argum.disagreeusers.splice(disagreeIndex, 1);
+                      argum.disagree=argum.disagree-1;
+                    }
+                } else {
+                    argum.disagreeusers.push($scope.user.username);
+                    argum.disagree=argum.disagree+1;
+                    if(agreeIndex !=-1){
+                      argum.agreeusers.splice(agreeIndex, 1);
+                      argum.agree=argum.agree-1;
+                    }
+                 
+                }    
+                argum.$update(function(){});
+            }    
+        }
+    }
+    
 
     Array.prototype.count = function(obj){
         var count = this.length;
@@ -572,7 +605,7 @@ angular.module('argums-app')
             });  
         } else {
             $scope.argum.$update(function(){
-                $state.go($state.current, {}, {reload: true});
+                $scope.loadArgum();
             });    
         }
     };

@@ -66,30 +66,41 @@ angular.module('argums-app').directive('activeNav', ['$location', function($loca
 
 }]);
 
-angular.module('argums-app').directive('starRating', ['$location', function($location) {
+angular.module('argums-app').directive('starRating', ['$location',  function($location) {
     return {
             restrict : 'A',
-            template : '<ul ng-init="showValue=show" ng-mouseleave="showValue=show||false" ng-mouseover="showValue=show||true"  class="rating {{color}}" >'
+            template : '<ul ng-init="showValue=show;selected=selected;" ng-mouseleave="showValue=show||false;showUsers=false"  ng-mouseover="showValue=show||true; showUsers=true"  class="rating {{color}}" >'
                      + '    <li ng-repeat="star in stars" ng-class="star"  ng-click="toggle($index)">'
                      + '{{code}}'
                      + '</li>'
                      + '</ul>'
                      + '<span ng-show="showValue">{{ratingValue}}</span>' 
-                     + '<style>ul.{{color}} li.filled { color:{{color}}}</style>',
-            scope : {
+                     + '<div class="voted-users" ng-show="showUsers"><span>{{users}}</span></div>' 
+                     + '<style>ul.{{color}} li.filled { color:{{color}}}  .voted-users {'
+                     + 'background-color: #FFD700;'
+                     + 'color: #000000;'
+                     + 'padding: 5px;'
+                     + 'position: absolute;'
+                     + 'top: -30px; left: 50px; border-radius: 10px;'
+                     + 'z-index: 10;}</style>',
+                scope : {
                 ratingValue : '@ratingValue',
+                users : '@users',
                 code: '@code',
                 color: '@color',
                 show: '@show',
                 max : '=',
                 off : '=',
-                onRatingSelected : '&'
+                onRatingSelected : '&',
+                selected: '=selected',
+                loggedin: '=loggedin'
+
             },
             link : function(scope, elem, attrs) {
+            
                 attrs.$observe('ratingValue', function(val) {
                     // val will have the value of the attribute
                     scope.ratingValue =     val;
-                  
                     scope.code = attrs.code|| '\u2605';
                     scope.color = attrs.color;
 //alert(scope.code);
@@ -107,6 +118,9 @@ angular.module('argums-app').directive('starRating', ['$location', function($loc
                 
                 scope.toggle = function(index) {
                     if (scope.off== true){ return;}
+                    if(scope.loggedin===false) {return;}
+                    if(scope.selected===true) {return;}
+
                     scope.ratingValue = index + 1;
                     scope.onRatingSelected({
                         rating : index + 1
@@ -120,6 +134,7 @@ angular.module('argums-app').directive('starRating', ['$location', function($loc
                         }
                     }
                 );
+                 
                 updateStars();
                 });
             }
