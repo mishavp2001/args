@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('argums-app', ['ngCookies', 'ui.router', 'ngResource', 'ui.bootstrap', 'ngAnimate'])
+angular.module('argums-app', ['ngCookies', 'ui.router', 'ngResource', 'ui.bootstrap', 'ngAnimate', 'colorpicker.module', 'wysiwyg.module'])
 
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 

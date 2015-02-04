@@ -21,7 +21,18 @@
           <a access-level="accessLevels.user" ui-sref="editArgum({id:argum._id})">{{argum.title}}</a> 
           <a ng-hide="loggedin" ui-sref="viewArgum({id:argum._id})">{{argum.title}}</a> 
           <p ng-class="{details: details}" class="arg-details" >
-              <span >{{argum.details}}</span>
+             <wysiwyg textarea-id="details" 
+              contenteditable="false"
+              textarea-height="auto" 
+              textarea-name="details" 
+              id="details"
+              placeholder="Add Details"
+              textarea-required 
+              ng-model="argum.details" 
+              enable-bootstrap-title="false"
+              textarea-menu=[]>
+            </wysiwyg>
+
               <span class="ellipsis">
                   &#133;
               </span>

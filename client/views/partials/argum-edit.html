@@ -46,7 +46,17 @@
     </tr>
     <tr>
         <td colspan="2">
-            <input type="text" ng-model="argum.details" class="form-control" id="details" placeholder="Add Details"/> 
+             <wysiwyg textarea-id="details" 
+              textarea-class="form-control"  
+              textarea-height="180px" 
+              textarea-name="details" 
+              id="details"
+              placeholder="Add Details"
+              textarea-required 
+              ng-model="argum.details" 
+              enable-bootstrap-title="true">
+            </wysiwyg>
+
              <accordion> 
                 <div accordion-group is-open="status.isFirstOpen" heading="Criterias">   
                     <label class="col-sm-2 control-label">Title</label>

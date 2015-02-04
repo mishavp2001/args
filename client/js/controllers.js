@@ -24,6 +24,7 @@ angular.module('argums-app')
     ['$rootScope', '$scope', '$location', '$window', 'popupService', 'Auth', 'Argum', 'Categories',  '$sce', 'Data', 'googleFactory',  '$q', '$state',
      function($rootScope, $scope, $location, $window, popupService, Auth, Argum, Categories,  $sce, Data, googleFactory, $q, $state){
     
+
     $scope.loading = true;
     $scope.loggedin = Auth.isLoggedIn();
     //alert($location.path);
