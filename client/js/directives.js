@@ -69,13 +69,13 @@ angular.module('argums-app').directive('activeNav', ['$location', function($loca
 angular.module('argums-app').directive('starRating', ['$location',  function($location) {
     return {
             restrict : 'A',
-            template : '<ul ng-init="showValue=show;selected=selected;" ng-mouseleave="showValue=show||false;showUsers=false"  ng-mouseover="showValue=show||true; showUsers=true"  class="rating {{color}}" >'
+            template : '<ul ng-init="showValue=show;selected=selected;" ng-mouseleave="showValue=show||false;showUsers=false"  ng-mouseover="showValue=show||true; showUsers=users.length"  class="rating {{color}}" >'
                      + '    <li ng-repeat="star in stars" ng-class="star"  ng-click="toggle($index)">'
                      + '{{code}}'
                      + '</li>'
                      + '</ul>'
                      + '<span ng-show="showValue">{{ratingValue}}</span>' 
-                     + '<div class="voted-users" ng-show="showUsers"><span>{{users}}</span></div>' 
+                     + '<div class="voted-users" ng-show="showUsers "><span ng-repeat="user in users|limitTo:5">{{user}} </span></div>' 
                      + '<style>ul.{{color}} li.filled { color:{{color}}}  .voted-users {'
                      + 'background-color: #FFD700;'
                      + 'color: #000000;'
@@ -85,7 +85,7 @@ angular.module('argums-app').directive('starRating', ['$location',  function($lo
                      + 'z-index: 10;}</style>',
                 scope : {
                 ratingValue : '@ratingValue',
-                users : '@users',
+                users : '=users',
                 code: '@code',
                 color: '@color',
                 show: '@show',

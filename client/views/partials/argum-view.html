@@ -20,7 +20,18 @@
     </tr>
     <tr>
         <td colspan="2">
-            {{argum.details}}
+             <wysiwyg textarea-id="details" 
+              textarea-class="form-control"  
+              textarea-height="180px" 
+              textarea-name="details" 
+              id="details"
+              placeholder="Add Details"
+              contenteditable="false"
+              textarea-required 
+              ng-model="argum.details" 
+              textarea-menu=[]
+              enable-bootstrap-title="true">
+            </wysiwyg>
              <accordion> 
                 <div accordion-group heading="Criterias">   
                      <ul >   
