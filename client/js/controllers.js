@@ -59,24 +59,27 @@ angular.module('argums-app')
 
 
     $scope.voteArgum = function(argum, type){
+        //alert("Here");
         if(!$scope.loggedin) {
             $rootScope.error = "Please login to vote";
         } else {
-            var agreeIndex = argum.agreeusers.indexOf($scope.user.username);
-            var disagreeIndex = argum.disagreeusers.indexOf($scope.user.username);
 
+            var agreeIndex =  argum.agreeusers.map(function(e) { return e.user; }).indexOf($scope.user.username);
+            var disagreeIndex =  argum.disagreeusers.map(function(e) { return e.user; }).indexOf($scope.user.username);
+
+       
             if ( (type == 'a' &&  agreeIndex != -1) || (type == 'd' && disagreeIndex!= -1)){
-                $rootScope.error = "You already voted";
+                //$rootScope.error = "You already voted";
             } else {
                 if(type == 'a') {
-                    argum.agreeusers.push($scope.user.username);
+                    argum.agreeusers.push({'user': $scope.user.username, 'comment': ''});
                     argum.agree=argum.agree+1;
                     if(disagreeIndex !=-1){
                       argum.disagreeusers.splice(disagreeIndex, 1);
                       argum.disagree=argum.disagree-1;
                     }
                 } else {
-                    argum.disagreeusers.push($scope.user.username);
+                    argum.disagreeusers.push({'user': $scope.user.username, 'comment': ''});
                     argum.disagree=argum.disagree+1;
                     if(agreeIndex !=-1){
                       argum.agreeusers.splice(agreeIndex, 1);
@@ -88,7 +91,45 @@ angular.module('argums-app')
             }    
         }
     }
-    
+
+    $scope.mycomment = "";
+
+    $scope.$watch('mycomment', function(data){
+          console.log('controller', data);
+          $scope.mycomment = data;
+    }, true);
+
+    $scope.agree_init = function(arg){
+        arg.agree=arg.agree||0;
+        return arg.agreeusers.map(function(e) { return e.user; }).indexOf($scope.user.username)!=-1;
+    }
+    $scope.disagree_init  = function(arg){
+        arg.disagree=arg.disagree||0;
+        return arg.disagreeusers.map(function(e) { return e.user; }).indexOf($scope.user.username)!=-1;
+    }
+
+    $scope.commentArgum = function(argum, type, comment){
+        if(!$scope.loggedin) {
+            $rootScope.error = "Please login to vote";
+        } else {
+
+            var agreeIndex =  argum.agreeusers.map(function(e) { return e.user; }).indexOf($scope.user.username);
+            var disagreeIndex =  argum.disagreeusers.map(function(e) { return e.user; }).indexOf($scope.user.username);
+       
+            if ( (type == 'a' &&  agreeIndex == -1) || (type == 'd' && disagreeIndex== -1)){
+                $rootScope.error = "You must vote first";
+            } else {
+                if(type == 'a') {
+                    argum.agreeusers[agreeIndex].comment = comment;
+                } else {
+                    argum.disagreeusers[disagreeIndex].comment =comment;
+                 
+                }    
+                argum.$update(function(){});
+            }    
+        }
+    }
+        
 
     Array.prototype.count = function(obj){
         var count = this.length;

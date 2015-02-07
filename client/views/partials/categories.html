@@ -98,10 +98,10 @@
           <br></br>
 
           <a id="agree-btn" class="btn btn-success" >
-            <span ng-init="argum.agree=argum.agree||0; selected=argum.agreeusers.indexOf(user.username)!=-1;" class="col-sm-1" star-rating rating-value="{{argum.agree}}" show="true" color="black" code="&#128077;" max="1" loggedin="loggedin" selected="selected" users="argum.agreeusers"  on-rating-selected="voteArgum(argum, 'a')"></span>
+            <span ng-init="" class="col-sm-1" star-rating rating-value="{{argum.agree}}" show="true" color="black" code="&#128077;" max="1" loggedin="loggedin"  users="argum.agreeusers" comment="mycomment" selected="{{agree_init(argum)}}" on-rating-selected="voteArgum(argum, 'a')" on-comment-submited="commentArgum(argum,'a', comment)"  ></span>
           </a>
           <a id="disagree-btn" class="btn btn-danger" >
-            <span ng-init="argum.disagree=argum.disagree||0;selected=argum.disagreeusers.indexOf(user.username)!=-1;"  users="argum.disagreeusers" class="col-sm-1" star-rating rating-value="{{argum.disagree}}" show="true" color="black" code="&#128078;" max="1" selected="selected" loggedin="loggedin" on-rating-selected="voteArgum(argum, 'd')"></span>
+            <span ng-init=""  users="argum.disagreeusers" comment="mycomment"  selected="{{disagree_init(argum)}}" users="argum.disagreeusers" class="col-sm-1" star-rating rating-value="{{argum.disagree}}" show="true" color="black" code="&#128078;" max="1"  loggedin="loggedin" on-rating-selected="voteArgum(argum, 'd')" on-comment-submited="commentArgum(argum,  'd', comment)"></span>
             </span> 
           </a>
 
