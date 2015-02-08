@@ -321,7 +321,7 @@ var routes = [
                     }
                     //email sent successfully
                     else {
-                     res.render('index');   
+                     res.redirect('/');   
                     }
                 });
         }]        
