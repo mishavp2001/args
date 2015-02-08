@@ -321,6 +321,7 @@ var routes = [
                     }
                     //email sent successfully
                     else {
+                     res.render('index');   
                      res.end("Email sent successfully");
                     }
                 });

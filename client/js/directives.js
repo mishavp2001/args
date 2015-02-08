@@ -203,7 +203,7 @@ angular.module('argums-app').directive('starRating', ['$location',  function($lo
                        
                         scope.toggle = function(index) {
                             if (scope.off== true){ return;}
-                            if(scope.loggedin===false) {return;}
+                            if(typeof scope.loggedin =='undefined' || scope.loggedin===false) {return;}
                             if(scope.selected==='true') { scope.showUsers = true;  return;}
                             scope.showUsers = true;        
                             scope.ratingValue = index + 1;
