@@ -17,9 +17,6 @@ var express =           require('express')
 
 
 var app = module.exports = express();
-
-require('./server/argum_routes.js');
-
     
 app.set('views', __dirname + '/client/views');
 app.set('view engine', 'jade');
