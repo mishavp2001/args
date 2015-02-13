@@ -16,8 +16,8 @@ var express =           require('express')
     , User =            require('./server/models/User.js');
 
 
-process.env['FACEBOOK_APP_ID'] = '275057425854799';
-process.env['FACEBOOK_APP_SECRET'] = '36a32863a58935deb01f3f5b22840e98';
+process.env['FACEBOOK_APP_ID'] = '1393920874250517';
+process.env['FACEBOOK_APP_SECRET'] = '472adbb19f9d81b358c0edb7b1847bb1';
 
 var app = module.exports = express();
     
