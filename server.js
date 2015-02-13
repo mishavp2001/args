@@ -16,6 +16,9 @@ var express =           require('express')
     , User =            require('./server/models/User.js');
 
 
+process.env['FACEBOOK_APP_ID'] = '275057425854799';
+process.env['FACEBOOK_APP_SECRET'] = '36a32863a58935deb01f3f5b22840e98';
+
 var app = module.exports = express();
     
 app.set('views', __dirname + '/client/views');
@@ -45,7 +48,7 @@ app.use(passport.session());
 
 passport.use(User.localStrategy);
 //passport.use(User.twitterStrategy());   Uncomment this line if you don't want to enable login via Twitter
-//passport.use(User.facebookStrategy());  Uncomment this line if you don't want to enable login via Facebook
+passport.use(User.facebookStrategy());    //Uncomment this line if you don't want to enable login via Facebook
 //passport.use(User.googleStrategy());    Uncomment this line if you don't want to enable login via Google
 //passport.use(User.linkedInStrategy());  Uncomment this line if you don't want to enable login via LinkedIn
 
