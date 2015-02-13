@@ -200,7 +200,7 @@ var routes = [
         middleware: [passport.authenticate('facebook')]
     },
     {
-        path: '/facebook/callback',
+        path: '/auth/auth/facebook/callback',
         httpMethod: 'GET',
         middleware: [passport.authenticate('facebook', {
             successRedirect: '/',
