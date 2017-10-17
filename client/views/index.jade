@@ -18,15 +18,19 @@ html(lang='en', data-ng-app='argums-app')
         script(type="text/javascript").
             var switchTo5x=true;
         script(type="text/javascript", src="http://w.sharethis.com/button/buttons.js")
+        script(type="text/javascript", src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")
+        
         // This is needed because Facebook login redirects add #_=_ at the end of the URL
         script(type="text/javascript").
             stLight.options({publisher: "5ef2a14c-fbbc-45a1-96eb-8b6c89f9e010", doNotHash: false, doNotCopy: false, hashAddressBar: false});
             if (window.location.href.indexOf('#_=_') > 0) {
                 window.location = window.location.href.replace(/#.*/, '');
             }
-
-       
-    
+            (adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "ca-pub-9780186080070625",
+                enable_page_level_ads: true
+              });
+            
     body(data-ng-cloak)
         .navbar(data-ng-controller="NavCtrl")
             .navbar-inner
